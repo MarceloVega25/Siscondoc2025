@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('concurso_veedor', function (Blueprint $table) {
             $table->id();
             $table->foreignId('concurso_id')->constrained()->onDelete('cascade');
-            $table->foreignId('veedor_id')->constrained()->onDelete('cascade');
+            $table->foreignId('veedor_id')->constrained('veedores')->onDelete('cascade');
             $table->timestamps();
         });
         

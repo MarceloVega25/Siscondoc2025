@@ -9,10 +9,14 @@ use Illuminate\Http\Request;
 class ConcursoController extends Controller
 {
     public function index()
-    {
-        $concursos = Concurso::with(['jerarquia', 'carreras', 'asignaturas', 'departamentos'])->get();
-        return view('concursos.index', compact('concursos'));
-    }
+{
+    $concursos = Concurso::with(['jerarquia', 'carreras', 'asignaturas', 'departamentos'])
+                         ->orderBy('id', 'desc')
+                         ->get();
+
+    return view('concursos.index', ['concursos' => $concursos]);
+}
+
 
     public function create()
     {
@@ -40,10 +44,9 @@ class ConcursoController extends Controller
         $concurso = Concurso::create($request->only([
             'numero', 'anio', 'jerarquia_id', 'tipo_concurso', 'modalidad_concurso',
             'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
-            'fecha_concurso', 'expediente', 'observaciones'
+            'fecha_concurso', 'expediente', 'observaciones', 'estado', 'comentario'
         ]));
 
-        // Registrar estado inicial
         $concurso->registrarEstado('Concurso creado', 'Registro inicial del concurso');
 
         // Relaciones múltiples
@@ -54,26 +57,41 @@ class ConcursoController extends Controller
         $concurso->veedores()->sync($request->input('veedores', []));
 
         // Relaciones con pivot (tipo)
-        if ($request->has('docentes')) {
-            foreach ($request->docentes as $docente_id => $tipo) {
-                $concurso->docentes()->attach($docente_id, ['tipo' => $tipo]);
+        if ($request->has('docentes_titulares')) {
+            foreach ($request->docentes_titulares as $id) {
+                $concurso->docentes()->attach($id, ['tipo' => 'titular']);
             }
         }
 
-        if ($request->has('estudiantes')) {
-            foreach ($request->estudiantes as $estudiante_id => $tipo) {
-                $concurso->estudiantes()->attach($estudiante_id, ['tipo' => $tipo]);
+        if ($request->has('docentes_suplentes')) {
+            foreach ($request->docentes_suplentes as $id) {
+                $concurso->docentes()->attach($id, ['tipo' => 'suplente']);
             }
         }
 
-        return redirect()->route('concursos.index')->with('success', 'Concurso creado correctamente.');
+        if ($request->has('estudiantes_titulares')) {
+            foreach ($request->estudiantes_titulares as $id) {
+                $concurso->estudiantes()->attach($id, ['tipo' => 'titular']);
+            }
+        }
+
+        if ($request->has('estudiantes_suplentes')) {
+            foreach ($request->estudiantes_suplentes as $id) {
+                $concurso->estudiantes()->attach($id, ['tipo' => 'suplente']);
+            }
+        }
+
+        return redirect()->route('concursos.index')->with('mensaje', 'Concurso creado correctamente.');
     }
 
     public function show(Concurso $concurso)
     {
         $concurso->load([
             'jerarquia', 'asignaturas', 'departamentos',
-            'carreras', 'inscriptos', 'veedores', 'docentes', 'estudiantes', 'estados'
+            'carreras', 'inscriptos', 'veedores',
+            'docentesTitulares', 'docentesSuplentes',
+            'estudiantesTitulares', 'estudiantesSuplentes',
+            'estados'
         ]);
 
         return view('concursos.show', compact('concurso'));
@@ -83,7 +101,9 @@ class ConcursoController extends Controller
     {
         $concurso->load([
             'jerarquia', 'asignaturas', 'departamentos',
-            'carreras', 'inscriptos', 'veedores', 'docentes', 'estudiantes'
+            'carreras', 'inscriptos', 'veedores',
+            'docentesTitulares', 'docentesSuplentes',
+            'estudiantesTitulares', 'estudiantesSuplentes',
         ]);
 
         return view('concursos.edit', [
@@ -111,7 +131,7 @@ class ConcursoController extends Controller
         $concurso->update($request->only([
             'numero', 'anio', 'jerarquia_id', 'tipo_concurso', 'modalidad_concurso',
             'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
-            'fecha_concurso', 'expediente', 'observaciones'
+            'fecha_concurso', 'expediente', 'observaciones', 'estado', 'comentario'
         ]));
 
         $concurso->registrarEstado('Datos actualizados', 'Actualización manual del concurso');
@@ -124,25 +144,35 @@ class ConcursoController extends Controller
         $concurso->veedores()->sync($request->input('veedores', []));
 
         $concurso->docentes()->detach();
-        if ($request->has('docentes')) {
-            foreach ($request->docentes as $docente_id => $tipo) {
-                $concurso->docentes()->attach($docente_id, ['tipo' => $tipo]);
+        if ($request->has('docentes_titulares')) {
+            foreach ($request->docentes_titulares as $id) {
+                $concurso->docentes()->attach($id, ['tipo' => 'titular']);
+            }
+        }
+        if ($request->has('docentes_suplentes')) {
+            foreach ($request->docentes_suplentes as $id) {
+                $concurso->docentes()->attach($id, ['tipo' => 'suplente']);
             }
         }
 
         $concurso->estudiantes()->detach();
-        if ($request->has('estudiantes')) {
-            foreach ($request->estudiantes as $estudiante_id => $tipo) {
-                $concurso->estudiantes()->attach($estudiante_id, ['tipo' => $tipo]);
+        if ($request->has('estudiantes_titulares')) {
+            foreach ($request->estudiantes_titulares as $id) {
+                $concurso->estudiantes()->attach($id, ['tipo' => 'titular']);
+            }
+        }
+        if ($request->has('estudiantes_suplentes')) {
+            foreach ($request->estudiantes_suplentes as $id) {
+                $concurso->estudiantes()->attach($id, ['tipo' => 'suplente']);
             }
         }
 
-        return redirect()->route('concursos.index')->with('success', 'Concurso actualizado correctamente.');
+        return redirect()->route('concursos.index')->with('mensaje', 'Concurso actualizado correctamente.');
     }
 
     public function destroy(Concurso $concurso)
     {
         $concurso->delete();
-        return redirect()->route('concursos.index')->with('success', 'Concurso eliminado correctamente.');
+        return redirect()->route('concursos.index')->with('mensaje', 'Concurso eliminado correctamente.');
     }
 }

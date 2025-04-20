@@ -22,6 +22,8 @@ class Concurso extends Model
         'modalidad_concurso',
         'expediente',
         'observaciones',
+        'estado',
+        'comentario',
     ];
 
     // Relación con jerarquía
@@ -44,14 +46,13 @@ class Concurso extends Model
         ]);
     }
 
-    // Accesor para mostrar el código "numero/anio"
+    // Accesor para mostrar el código "numero/año"
     public function getCodigoAttribute()
     {
         return $this->numero . '/' . $this->anio;
     }
 
-    // Relaciones con entidades intermedias
-
+    // Relaciones con tablas intermedias
     public function asignaturas()
     {
         return $this->belongsToMany(Asignatura::class, 'concurso_asignatura')->withTimestamps();
@@ -70,14 +71,14 @@ class Concurso extends Model
     public function docentes()
     {
         return $this->belongsToMany(Docente::class, 'concurso_docente')
-            ->withPivot('tipo') // titular/suplente
+            ->withPivot('tipo')
             ->withTimestamps();
     }
 
     public function estudiantes()
     {
         return $this->belongsToMany(Estudiante::class, 'concurso_estudiante')
-            ->withPivot('tipo') // titular/suplente
+            ->withPivot('tipo')
             ->withTimestamps();
     }
 
@@ -89,5 +90,35 @@ class Concurso extends Model
     public function inscriptos()
     {
         return $this->belongsToMany(Inscripto::class, 'concurso_inscripto')->withTimestamps();
+    }
+
+    // Relaciones filtradas (docentes)
+    public function docentesTitulares()
+    {
+        return $this->belongsToMany(Docente::class, 'concurso_docente')
+            ->wherePivot('tipo', 'titular')
+            ->withTimestamps();
+    }
+
+    public function docentesSuplentes()
+    {
+        return $this->belongsToMany(Docente::class, 'concurso_docente')
+            ->wherePivot('tipo', 'suplente')
+            ->withTimestamps();
+    }
+
+    // Relaciones filtradas (estudiantes)
+    public function estudiantesTitulares()
+    {
+        return $this->belongsToMany(Estudiante::class, 'concurso_estudiante')
+            ->wherePivot('tipo', 'titular')
+            ->withTimestamps();
+    }
+
+    public function estudiantesSuplentes()
+    {
+        return $this->belongsToMany(Estudiante::class, 'concurso_estudiante')
+            ->wherePivot('tipo', 'suplente')
+            ->withTimestamps();
     }
 }

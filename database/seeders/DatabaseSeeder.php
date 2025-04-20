@@ -20,18 +20,18 @@ class DatabaseSeeder extends Seeder
             //'email' => 'test@example.com',
         //]);
         $this->call([
-            InscriptoSeeder::class,
-            AdscriptoSeeder::class,
-            DocenteSeeder::class,
-            EstudianteSeeder::class,
-            VeedorSeeder::class,
             JerarquiaSeeder::class,
             DepartamentoSeeder::class,
             CarreraSeeder::class,
             AsignaturaSeeder::class,
             UsuarioSeeder::class,
+            DocenteSeeder::class,
+            EstudianteSeeder::class,
+            VeedorSeeder::class,
+            InscriptoSeeder::class,
+            AdscriptoSeeder::class,
             ConcursoSeeder::class,
-
         ]);
+        
     }
 }

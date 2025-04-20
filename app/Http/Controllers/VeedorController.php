@@ -189,7 +189,7 @@ class VeedorController extends Controller
             // Mensaje y redirección con JavaScript desde la vista
             return redirect()->route('veedores.buscar')->with([
                 'mensaje' => 'existe',
-                'docente_id' => $veedor->id
+                'veedor_id' => $veedor->id
             ]);
         } else {
             return redirect()->route('veedores.buscar')->with([

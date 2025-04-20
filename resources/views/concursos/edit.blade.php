@@ -1,158 +1,235 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="content" style="margin-left: 20px">
-    <h2>Editar Concurso</h2>
+    <div class="content" style="margin-left: 20px">
+        <h1>Actualizar Datos del Concurso</h1>
 
-    <form action="{{ route('concursos.update', $concurso) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="row mb-3">
-            <div class="col">
-                <label>Número de Concurso</label>
-                <input type="text" name="numero" class="form-control" value="{{ old('numero', $concurso->numero) }}" required>
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger">
+                <li>{{ $error }}</li>
             </div>
-            <div class="col">
-                <label>Año</label>
-                <input type="number" name="año" class="form-control" value="{{ old('año', $concurso->año) }}" required>
-            </div>
-        </div>
+        @endforeach
 
-        <div class="row mb-3">
-            <div class="col">
-                <label>Jerarquía</label>
-                <select name="jerarquia_id" class="form-control" required>
-                    @foreach($jerarquias as $jerarquia)
-                        <option value="{{ $jerarquia->id }}" {{ $concurso->jerarquia_id == $jerarquia->id ? 'selected' : '' }}>
-                            {{ $jerarquia->nombre }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col">
-                <label>Asignatura</label>
-                <select name="asignatura_id" class="form-control" required>
-                    @foreach($asignaturas as $asignatura)
-                        <option value="{{ $asignatura->id }}" {{ $concurso->asignatura_id == $asignatura->id ? 'selected' : '' }}>
-                            {{ $asignatura->nombre }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col">
-                <label>Departamento</label>
-                <select name="departamento_id" class="form-control" required>
-                    @foreach($departamentos as $departamento)
-                        <option value="{{ $departamento->id }}" {{ $concurso->departamento_id == $departamento->id ? 'selected' : '' }}>
-                            {{ $departamento->nombre }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
+        <div class="row">
+            <div class="col-md-11">
+                <div class="card card-outline card-success">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>ACTUALICE LOS DATOS</b></h3>
+                    </div>
 
-        <div class="mb-3">
-            <label>Carreras (múltiples)</label>
-            <select name="carreras[]" class="form-control" multiple>
-                @foreach($carreras as $carrera)
-                    <option value="{{ $carrera->id }}" {{ $concurso->carreras->contains($carrera->id) ? 'selected' : '' }}>
-                        {{ $carrera->nombre }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+                    <div class="card-body">
+                        <form action="{{ route('concursos.update', $concurso->id) }}" method="POST">
+                            @csrf
+                            @method('PUT')
 
-        <div class="mb-3">
-            <label>Tipo de Concurso</label>
-            <input type="text" name="tipo_concurso" class="form-control" value="{{ old('tipo_concurso', $concurso->tipo_concurso) }}" required>
-        </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Número</label><b>*</b>
+                                    <input type="number" name="numero" class="form-control" value="{{ $concurso->numero }}" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Año</label><b>*</b>
+                                    <input type="number" name="anio" class="form-control" value="{{ $concurso->anio }}" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Fecha Concurso</label>
+                                    <input type="date" name="fecha_concurso" class="form-control" value="{{ $concurso->fecha_concurso }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Expediente</label>
+                                    <input type="text" name="expediente" class="form-control" value="{{ $concurso->expediente }}">
+                                </div>
+                            </div>
 
-        <div class="mb-3">
-            <label>Fecha del Concurso</label>
-            <input type="date" name="fecha_concurso" class="form-control" value="{{ old('fecha_concurso', $concurso->fecha_concurso) }}">
-        </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label>Jerarquía</label><b>*</b>
+                                    <select name="jerarquia_id" class="form-control" required>
+                                        @foreach ($jerarquias as $j)
+                                            <option value="{{ $j->id }}" {{ $concurso->jerarquia_id == $j->id ? 'selected' : '' }}>
+                                                {{ $j->nombre }} ({{ $j->siglas }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-        <div class="mb-3">
-            <label>Expediente</label>
-            <input type="text" name="expediente" class="form-control" value="{{ old('expediente', $concurso->expediente) }}">
-        </div>
+                                <div class="col-md-4">
+                                    <label>Tipo de Concurso</label><b>*</b>
+                                    <select name="tipo_concurso" class="form-control" required>
+                                        <option value="Abierto" {{ $concurso->tipo_concurso == 'Abierto' ? 'selected' : '' }}>Abierto</option>
+                                        <option value="Cerrado" {{ $concurso->tipo_concurso == 'Cerrado' ? 'selected' : '' }}>Cerrado</option>
+                                    </select>
+                                </div>
 
-        <div class="mb-3">
-            <label>Período de Inscripción</label>
-            <textarea name="periodo_inscripcion" class="form-control">{{ old('periodo_inscripcion', $concurso->periodo_inscripcion) }}</textarea>
-        </div>
+                                <div class="col-md-4">
+                                    <label>Modalidad</label><b>*</b>
+                                    <select name="modalidad_concurso" class="form-control" required>
+                                        <option value="Presencial" {{ $concurso->modalidad_concurso == 'Presencial' ? 'selected' : '' }}>Presencial</option>
+                                        <option value="Virtual" {{ $concurso->modalidad_concurso == 'Virtual' ? 'selected' : '' }}>Virtual</option>
+                                        <option value="Mixta" {{ $concurso->modalidad_concurso == 'Mixta' ? 'selected' : '' }}>Mixta</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-3">
+                                    <label>Inicio Publicidad</label>
+                                    <input type="date" name="inicio_publicidad" class="form-control" value="{{ $concurso->inicio_publicidad }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Cierre Publicidad</label>
+                                    <input type="date" name="cierre_publicidad" class="form-control" value="{{ $concurso->cierre_publicidad }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Inicio Inscripción</label>
+                                    <input type="date" name="inicio_inscripcion" class="form-control" value="{{ $concurso->inicio_inscripcion }}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Cierre Inscripción</label>
+                                    <input type="date" name="cierre_inscripcion" class="form-control" value="{{ $concurso->cierre_inscripcion }}">
+                                </div>
+                            </div>
 
-        <div class="mb-3">
-            <label>Observaciones</label>
-            <textarea name="observaciones" class="form-control">{{ old('observaciones', $concurso->observaciones) }}</textarea>
-        </div>
+                            
 
-        <div class="mb-3">
-            <label>Estado</label>
-            <textarea name="estado" class="form-control">{{ old('estado', $concurso->estado) }}</textarea>
-        </div>
+                            <div class="form-group mt-3">
+                                <label>Observaciones</label>
+                                <textarea name="observaciones" class="form-control">{{ $concurso->observaciones }}</textarea>
+                            </div>
 
-        <hr>
+                            <hr>
 
-        <div class="mb-3">
-            <label>Inscriptos (múltiples)</label>
-            <select name="inscriptos[]" class="form-control" multiple>
-                @foreach($inscriptos as $inscripto)
-                    <option value="{{ $inscripto->id }}" {{ $concurso->inscriptos->contains($inscripto->id) ? 'selected' : '' }}>
-                        {{ $inscripto->nombre_apellido }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+                            @php
+                                function isSelected($collection, $id) {
+                                    return in_array($id, $collection->pluck('id')->toArray()) ? 'selected' : '';
+                                }
+                            @endphp
 
-        <div class="mb-3">
-            <label>Docentes</label>
-            @foreach($docentes as $docente)
-                @php
-                    $tipo = $concurso->docentes->firstWhere('id', $docente->id)?->pivot->tipo;
-                @endphp
-                <div class="form-check mb-1">
-                    <input class="form-check-input" type="radio" name="docentes[{{ $docente->id }}]" value="titular" {{ $tipo === 'titular' ? 'checked' : '' }}>
-                    <label class="form-check-label">Titular - {{ $docente->nombre_apellido }}</label>
-                    <br>
-                    <input class="form-check-input" type="radio" name="docentes[{{ $docente->id }}]" value="suplente" {{ $tipo === 'suplente' ? 'checked' : '' }}>
-                    <label class="form-check-label">Suplente - {{ $docente->nombre_apellido }}</label>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label>Asignaturas</label>
+                                    <select name="asignaturas[]" class="form-control select2" multiple>
+                                        @foreach ($asignaturas as $a)
+                                            <option value="{{ $a->id }}" {{ isSelected($concurso->asignaturas, $a->id) }}>{{ $a->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Departamentos</label>
+                                    <select name="departamentos[]" class="form-control select2" multiple>
+                                        @foreach ($departamentos as $d)
+                                            <option value="{{ $d->id }}" {{ isSelected($concurso->departamentos, $d->id) }}>{{ $d->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Carreras</label>
+                                    <select name="carreras[]" class="form-control select2" multiple>
+                                        @foreach ($carreras as $c)
+                                            <option value="{{ $c->id }}" {{ isSelected($concurso->carreras, $c->id) }}>{{ $c->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label>Docentes Titulares</label>
+                                    <select name="docentes_titulares[]" class="form-control select2" multiple>
+                                        @foreach ($docentes as $d)
+                                            <option value="{{ $d->id }}" {{ isSelected($concurso->docentesTitulares, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Docentes Suplentes</label>
+                                    <select name="docentes_suplentes[]" class="form-control select2" multiple>
+                                        @foreach ($docentes as $d)
+                                            <option value="{{ $d->id }}" {{ isSelected($concurso->docentesSuplentes, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label>Estudiantes Titulares</label>
+                                    <select name="estudiantes_titulares[]" class="form-control select2" multiple>
+                                        @foreach ($estudiantes as $e)
+                                            <option value="{{ $e->id }}" {{ isSelected($concurso->estudiantesTitulares, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Estudiantes Suplentes</label>
+                                    <select name="estudiantes_suplentes[]" class="form-control select2" multiple>
+                                        @foreach ($estudiantes as $e)
+                                            <option value="{{ $e->id }}" {{ isSelected($concurso->estudiantesSuplentes, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <label>Veedores</label>
+                                    <select name="veedores[]" class="form-control select2" multiple>
+                                        @foreach ($veedores as $v)
+                                            <option value="{{ $v->id }}" {{ isSelected($concurso->veedores, $v->id) }}>{{ $v->nombre_apellido }}, DNI: {{ $v->dni }}, Cargo: {{ $v->cargo }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label>Inscriptos</label>
+                                    <select name="inscriptos[]" class="form-control select2" multiple>
+                                        @foreach ($inscriptos as $i)
+                                            <option value="{{ $i->id }}" {{ isSelected($concurso->inscriptos, $i->id) }}>{{ $i->nombre_apellido }}, DNI: {{ $i->dni }}, Email: {{ $i->email }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr>
+
+
+                            <div class="form-group mt-4">
+                                <a href="{{ route('concursos.index') }}" class="btn btn-danger">Cancelar</a>
+                                <button type="submit" class="btn btn-success">Actualizar Registro</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            @endforeach
+            </div>
         </div>
+    </div>
 
-        <div class="mb-3">
-            <label>Estudiantes</label>
-            @foreach($estudiantes as $estudiante)
-                @php
-                    $tipo = $concurso->estudiantes->firstWhere('id', $estudiante->id)?->pivot->tipo;
-                @endphp
-                <div class="form-check mb-1">
-                    <input class="form-check-input" type="radio" name="estudiantes[{{ $estudiante->id }}]" value="titular" {{ $tipo === 'titular' ? 'checked' : '' }}>
-                    <label class="form-check-label">Titular - {{ $estudiante->nombre_apellido }}</label>
-                    <br>
-                    <input class="form-check-input" type="radio" name="estudiantes[{{ $estudiante->id }}]" value="suplente" {{ $tipo === 'suplente' ? 'checked' : '' }}>
-                    <label class="form-check-label">Suplente - {{ $estudiante->nombre_apellido }}</label>
-                </div>
-            @endforeach
-        </div>
+    <!-- SweetAlert para errores -->
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error en el formulario',
+                html: `{!! implode('<br>', $errors->all()) !!}`,
+                confirmButtonColor: '#3085d6'
+            });
+        </script>
+    @endif
 
-        <div class="mb-3">
-            <label>Veedores (múltiples)</label>
-            <select name="veedores[]" class="form-control" multiple>
-                @foreach($veedores as $veedor)
-                    <option value="{{ $veedor->id }}" {{ $concurso->veedores->contains($veedor->id) ? 'selected' : '' }}>
-                        {{ $veedor->nombre_apellido }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
+@endsection
 
-        <div class="text-end">
-            <a href="{{ route('concursos.index') }}" class="btn btn-danger">Cancelar</a>
-            <button type="submit" class="btn btn-primary">Actualizar Concurso</button>
-        </div>
-    </form>
-</div>
+@section('scripts')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2({
+                width: '100%',
+                placeholder: 'Seleccione una o más opciones',
+                allowClear: true
+            });
+        });
+    </script>
 @endsection

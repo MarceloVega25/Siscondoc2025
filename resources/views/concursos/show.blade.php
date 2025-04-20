@@ -1,123 +1,149 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="content" style="margin-left: 20px">
-    <h2>Detalle del Concurso</h2>
+    <div class="content" style="margin-left: 20px">
+        <h1>Datos del Concurso</h1>
 
-    <div class="row mb-3">
-        <div class="col">
-            <label>Número de Concurso</label>
-            <input type="text" class="form-control" value="{{ $concurso->numero }}" disabled>
+        <div class="row">
+            <div class="col-md-11">
+                <div class="card card-outline card-info">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>Información del Concurso</b></h3>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Número</label>
+                                <input type="text" class="form-control" value="{{ $concurso->numero }}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Año</label>
+                                <input type="text" class="form-control" value="{{ $concurso->anio }}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Fecha Concurso</label>
+                                <input type="text" class="form-control" value="{{ $concurso->fecha_concurso }}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Expediente</label>
+                                <input type="text" class="form-control" value="{{ $concurso->expediente }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <label>Jerarquía</label>
+                                <input type="text" class="form-control" value="{{ $concurso->jerarquia->nombre ?? '' }}" disabled>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Tipo de Concurso</label>
+                                <input type="text" class="form-control" value="{{ $concurso->tipo_concurso }}" disabled>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Modalidad</label>
+                                <input type="text" class="form-control" value="{{ $concurso->modalidad_concurso }}" disabled>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-md-3">
+                                <label>Inicio Publicidad</label>
+                                <input type="text" class="form-control" value="{{ $concurso->inicio_publicidad }}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Cierre Publicidad</label>
+                                <input type="text" class="form-control" value="{{ $concurso->cierre_publicidad }}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Inicio Inscripción</label>
+                                <input type="text" class="form-control" value="{{ $concurso->inicio_inscripcion }}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Cierre Inscripción</label>
+                                <input type="text" class="form-control" value="{{ $concurso->cierre_inscripcion }}" disabled>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="form-group mt-3">
+                            <label>Observaciones</label>
+                            <textarea class="form-control" disabled>{{ $concurso->observaciones }}</textarea>
+                        </div>
+
+                        <hr>
+
+                        @php
+                            function lista($items) {
+                                return $items->pluck('nombre_apellido')->implode(', ');
+                            }
+                        @endphp
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Asignaturas</label>
+                                <textarea class="form-control" disabled>{{ $concurso->asignaturas->pluck('nombre')->implode(', ') }}</textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Departamentos</label>
+                                <textarea class="form-control" disabled>{{ $concurso->departamentos->pluck('nombre')->implode(', ') }}</textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label>Carreras</label>
+                                <textarea class="form-control" disabled>{{ $concurso->carreras->pluck('nombre')->implode(', ') }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label>Docentes Titulares</label>
+                                <textarea class="form-control" disabled>{{ lista($concurso->docentesTitulares) }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Docentes Suplentes</label>
+                                <textarea class="form-control" disabled>{{ lista($concurso->docentesSuplentes) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label>Estudiantes Titulares</label>
+                                <textarea class="form-control" disabled>{{ lista($concurso->estudiantesTitulares) }}</textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Estudiantes Suplentes</label>
+                                <textarea class="form-control" disabled>{{ lista($concurso->estudiantesSuplentes) }}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <label>Veedores</label>
+                                <textarea class="form-control" disabled>{{ lista($concurso->veedores) }}</textarea>
+                            </div>
+                            
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label>Inscriptos</label>
+                                <textarea class="form-control" disabled>{{ lista($concurso->inscriptos) }}</textarea>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <hr>
+                                <a href="{{ route('concursos.index') }}" class="btn btn-danger">Volver al listado</a>
+                                <a href="{{ route('concursos.edit', $concurso->id) }}" class="btn btn-warning">Editar Concurso</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col">
-            <label>Año</label>
-            <input type="text" class="form-control" value="{{ $concurso->año }}" disabled>
-        </div>
     </div>
-
-    <div class="row mb-3">
-        <div class="col">
-            <label>Jerarquía</label>
-            <input type="text" class="form-control" value="{{ $concurso->jerarquia->nombre ?? 'N/A' }}" disabled>
-        </div>
-        <div class="col">
-            <label>Asignatura</label>
-            <input type="text" class="form-control" value="{{ $concurso->asignatura->nombre ?? 'N/A' }}" disabled>
-        </div>
-        <div class="col">
-            <label>Departamento</label>
-            <input type="text" class="form-control" value="{{ $concurso->departamento->nombre ?? 'N/A' }}" disabled>
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label>Tipo de Concurso</label>
-        <input type="text" class="form-control" value="{{ $concurso->tipo_concurso }}" disabled>
-    </div>
-
-    <div class="mb-3">
-        <label>Fecha del Concurso</label>
-        <input type="text" class="form-control" value="{{ $concurso->fecha_concurso }}" disabled>
-    </div>
-
-    <div class="mb-3">
-        <label>Expediente</label>
-        <input type="text" class="form-control" value="{{ $concurso->expediente }}" disabled>
-    </div>
-
-    <div class="mb-3">
-        <label>Período de Inscripción</label>
-        <textarea class="form-control" disabled>{{ $concurso->periodo_inscripcion }}</textarea>
-    </div>
-
-    <div class="mb-3">
-        <label>Observaciones</label>
-        <textarea class="form-control" disabled>{{ $concurso->observaciones }}</textarea>
-    </div>
-
-    <div class="mb-3">
-        <label>Estado</label>
-        <textarea class="form-control" disabled>{{ $concurso->estado }}</textarea>
-    </div>
-
-    <div class="mb-3">
-        <label>Carreras</label>
-        <ul>
-            @forelse($concurso->carreras as $carrera)
-                <li>{{ $carrera->nombre }}</li>
-            @empty
-                <li>No registradas</li>
-            @endforelse
-        </ul>
-    </div>
-
-    <div class="mb-3">
-        <label>Inscriptos</label>
-        <ul>
-            @forelse($concurso->inscriptos as $inscripto)
-                <li>{{ $inscripto->nombre_apellido }} (DNI: {{ $inscripto->dni }})</li>
-            @empty
-                <li>No registrados</li>
-            @endforelse
-        </ul>
-    </div>
-
-    <div class="mb-3">
-        <label>Docentes</label>
-        <ul>
-            @forelse($concurso->docentes as $docente)
-                <li>{{ $docente->nombre_apellido }} ({{ ucfirst($docente->pivot->tipo) }})</li>
-            @empty
-                <li>No registrados</li>
-            @endforelse
-        </ul>
-    </div>
-
-    <div class="mb-3">
-        <label>Estudiantes</label>
-        <ul>
-            @forelse($concurso->estudiantes as $estudiante)
-                <li>{{ $estudiante->nombre_apellido }} ({{ ucfirst($estudiante->pivot->tipo) }})</li>
-            @empty
-                <li>No registrados</li>
-            @endforelse
-        </ul>
-    </div>
-
-    <div class="mb-3">
-        <label>Veedores</label>
-        <ul>
-            @forelse($concurso->veedores as $veedor)
-                <li>{{ $veedor->nombre_apellido }} - {{ $veedor->institucion }}</li>
-            @empty
-                <li>No registrados</li>
-            @endforelse
-        </ul>
-    </div>
-
-    <div class="text-end">
-        <a href="{{ route('concursos.index') }}" class="btn btn-danger">Volver al listado</a>
-        <a href="{{ route('concursos.edit', $concurso) }}" class="btn btn-primary">Editar</a>
-    </div>
-</div>
 @endsection

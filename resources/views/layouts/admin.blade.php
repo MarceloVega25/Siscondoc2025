@@ -742,6 +742,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
 
+    <!-- CSS de Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- JS de Select2 -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 </body>
 
 </html>
@@ -754,5 +760,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
     });
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            width: '100%',
+            placeholder: 'Seleccione una o más opciones',
+            allowClear: true
+        });
+    });
+</script>
+
 
 @yield('scripts') <!-- Esto permitirá que las vistas hijas agreguen scripts adicionales -->

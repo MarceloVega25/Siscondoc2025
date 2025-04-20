@@ -3,9 +3,18 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\{Concurso, Jerarquia, Asignatura, Departamento, Carrera, Docente, Estudiante, Veedor, Inscripto};
+use App\Models\{
+    Concurso,
+    Jerarquia,
+    Asignatura,
+    Departamento,
+    Carrera,
+    Docente,
+    Estudiante,
+    Veedor,
+    Inscripto
+};
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class ConcursoSeeder extends Seeder
@@ -18,12 +27,32 @@ class ConcursoSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         // Asegurar que existan jerarquías y otras entidades básicas
-        $jerarquia = Jerarquia::firstOrCreate(['nombre' => 'AY2']);
-        $asignatura = Asignatura::firstOrCreate(['nombre' => 'Geomorfología']);
-        $departamento = Departamento::firstOrCreate(['nombre' => 'Medio Ambiente']);
-        $carrera1 = Carrera::firstOrCreate(['nombre' => 'Ingeniería en Agrimensura']);
-        $carrera2 = Carrera::firstOrCreate(['nombre' => 'Ingeniería Ambiental']);
+        $jerarquia = Jerarquia::firstOrCreate(
+            ['siglas' => 'AY2'],
+            ['nombre' => 'Ayudante 2']
+        );
 
+        $asignatura = Asignatura::firstOrCreate(
+            ['siglas' => 'GEO'],
+            ['nombre' => 'Geomorfología']
+        );
+
+        $departamento = Departamento::firstOrCreate(
+            ['siglas' => 'MA'],
+            ['nombre' => 'Medio Ambiente']
+        );
+
+        $carrera1 = Carrera::firstOrCreate(
+            ['siglas' => 'IA'],
+            ['nombre' => 'Ingeniería en Agrimensura']
+        );
+
+        $carrera2 = Carrera::firstOrCreate(
+            ['siglas' => 'IAM'],
+            ['nombre' => 'Ingeniería Ambiental']
+        );
+
+        // Crear actores del concurso
         $docente1 = Docente::factory()->create();
         $docente2 = Docente::factory()->create();
         $estudiante1 = Estudiante::factory()->create();
@@ -58,6 +87,7 @@ class ConcursoSeeder extends Seeder
         $concurso->veedores()->attach($veedor1->id);
         $concurso->inscriptos()->attach($inscripto1->id);
 
+        // Estado inicial
         $concurso->registrarEstado('Concurso creado automáticamente', 'Seeder de prueba.');
     }
 }

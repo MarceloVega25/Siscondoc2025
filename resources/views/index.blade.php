@@ -20,7 +20,7 @@
           <p>Inscriptos</p>
         </div>
         <div class="icon">
-          <i class="bi bi-clipboard2-check-fill"></i>
+          <i class="bi bi-person-badge"></i>
         </div>
         <a href="{{ url('inscriptos') }}" class="small-box-footer" style="margin-top: 20px">Más información <i class="fas fa-arrow-circle-right"></i></a>
       </div>
@@ -60,7 +60,7 @@
           <p>Docentes</p>
         </div>
         <div class="icon">
-          <i class="bi bi-microsoft-teams"></i>
+          <i class="bi bi-people"></i>
         </div>
         <a href="{{ url('docentes') }}" class="small-box-footer" style="margin-top: 20px">Más información <i class="fas fa-arrow-circle-right"></i></a>
       </div>
@@ -69,7 +69,7 @@
     <!-- ./col -->
     <div class="col-lg-3">
       <!-- small box -->
-      <div class="small-box bg-dark" style="height: 160px">
+      <div class="small-box bg-secondary" style="height: 160px">
         <div class="inner">
           <?php $contador_de_estudiante = 0; ?>
           @foreach ($estudiantes as $estudiante)
@@ -106,7 +106,26 @@
       </div>
     </div>
     
-    
+    <!-- ./col -->
+    <div class="col-lg-3">
+      <!-- small box -->
+      <div class="small-box bg-dark" style="height: 160px">
+        <div class="inner">
+          <?php $contador_de_usuario = 0; ?>
+          @foreach ($usuarios as $usuario)
+          <?php $contador_de_usuario = $contador_de_usuario + 1;?>            
+          @endforeach
+          <h3><?=$contador_de_usuario;?></h3>
+
+          <p>Usuarios</p>
+        </div>
+        <div class="icon">
+          <i class="bi bi-person-workspace"></i>
+        </div>
+        <a href="{{ url('usuarios') }}" class="small-box-footer" style="margin-top: 20px">Más información <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
   </div>
 
 </div>

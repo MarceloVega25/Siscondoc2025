@@ -2,90 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Concurso;
+use App\Models\Jerarquia;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use App\Models\{Docente, Estudiante, Veedor, Inscripto, Concurso};
 use Carbon\Carbon;
-
-class DocenteFactory extends Factory
-{
-    protected $model = Docente::class;
-
-    public function definition(): array
-    {
-        return [
-            'nombre_apellido' => $this->faker->name(),
-            'dni' => $this->faker->unique()->numerify('########'),
-            'fecha_nacimiento' => $this->faker->date('Y-m-d'),
-            'genero' => $this->faker->randomElement(['M', 'F']),
-            'email' => $this->faker->unique()->safeEmail(),
-            'telefono' => $this->faker->phoneNumber(),
-            'cv' => 'cv.pdf',
-            'foto' => 'foto.jpg',
-            'institucion' => $this->faker->company(),
-            'tipo' => $this->faker->randomElement(['titular', 'suplente']),
-        ];
-    }
-}
-
-class EstudianteFactory extends Factory
-{
-    protected $model = Estudiante::class;
-
-    public function definition(): array
-    {
-        return [
-            'nombre_apellido' => $this->faker->name(),
-            'dni' => $this->faker->unique()->numerify('########'),
-            'fecha_nacimiento' => $this->faker->date('Y-m-d'),
-            'genero' => $this->faker->randomElement(['M', 'F']),
-            'email' => $this->faker->unique()->safeEmail(),
-            'telefono' => $this->faker->phoneNumber(),
-            'cv' => 'cv.pdf',
-            'foto' => 'foto.jpg',
-        ];
-    }
-}
-
-class VeedorFactory extends Factory
-{
-    protected $model = Veedor::class;
-
-    public function definition(): array
-    {
-        return [
-            'nombre_apellido' => $this->faker->name(),
-            'dni' => $this->faker->unique()->numerify('########'),
-            'fecha_nacimiento' => $this->faker->date('Y-m-d'),
-            'genero' => $this->faker->randomElement(['M', 'F']),
-            'email' => $this->faker->unique()->safeEmail(),
-            'telefono' => $this->faker->phoneNumber(),
-            'cv' => 'cv.pdf',
-            'foto' => 'foto.jpg',
-            'institucion' => $this->faker->company(),
-            'cargo' => $this->faker->jobTitle(),
-        ];
-    }
-}
-
-class InscriptoFactory extends Factory
-{
-    protected $model = Inscripto::class;
-
-    public function definition(): array
-    {
-        return [
-            'nombre_apellido' => $this->faker->name(),
-            'dni' => $this->faker->unique()->numerify('########'),
-            'fecha_nacimiento' => $this->faker->date('Y-m-d'),
-            'genero' => $this->faker->randomElement(['M', 'F']),
-            'email' => $this->faker->unique()->safeEmail(),
-            'telefono' => $this->faker->phoneNumber(),
-            'cv' => 'cv.pdf',
-            'foto' => 'foto.jpg',
-        ];
-    }
-}
 
 class ConcursoFactory extends Factory
 {

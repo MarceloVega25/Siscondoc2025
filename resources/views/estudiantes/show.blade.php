@@ -64,15 +64,15 @@
                                 <div class="row">
                                     <div class="col-md-5">
                                         <div class="form-group">
-                                            <label>Dirección</label>
-                                            <input type="text" class="form-control" value="{{ $estudiante->direccion }}" disabled>
+                                            <label>Institución</label>
+                                            <input type="text" class="form-control" value="{{ $estudiante->institucion }}" disabled>
                                         </div>
                                     </div>
 
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Localidad/Ciudad</label>
-                                            <input type="text" class="form-control" value="{{ $estudiante->localidad_ciudad }}" disabled>
+                                            <label>Tipo</label>
+                                            <input type="text" class="form-control" value="{{ $estudiante->tipo }}" disabled>
                                         </div>
                                     </div>
 

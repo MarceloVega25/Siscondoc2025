@@ -1,170 +1,226 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="content" style="margin-left: 20px">
-    <h1>Creación de un nuevo Concurso</h1>
+    <div class="content" style="margin-left: 20px">
+        <h1>Creación de un nuevo Concurso</h1>
 
-    @foreach ($errors->all() as $error)
-        <div class="alert alert-danger">
-            <li>{{ $error }}</li>
-        </div>
-    @endforeach
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger">
+                <li>{{ $error }}</li>
+            </div>
+        @endforeach
 
-    <div class="row">
-        <div class="col-md-11">
-            <div class="card card-outline card-primary">
-                <div class="card-header">
-                    <h3 class="card-title"><b>COMPLETE LOS DATOS</b></h3>
-                </div>
+        <div class="row">
+            <div class="col-md-11">
+                <div class="card card-outline card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title"><b>COMPLETE LOS DATOS</b></h3>
+                    </div>
 
-                <div class="card-body">
-                    <form action="{{ route('concursos.store') }}" method="POST">
-                        @csrf
+                    <div class="card-body">
+                        <form action="{{ route('concursos.store') }}" method="POST">
+                            @csrf
 
-                        <!-- JERARQUÍA -->
-                        <div class="form-group">
-                            <label>Jerarquía</label><b>*</b>
-                            <select name="jerarquia_id" class="form-control selectpicker" data-live-search="true" required>
-                                <option value="">Seleccione</option>
-                                @foreach ($jerarquias as $jerarquia)
-                                    <option value="{{ $jerarquia->id }}">{{ $jerarquia->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Número</label><b>*</b>
+                                    <input type="number" name="numero" class="form-control" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Año</label><b>*</b>
+                                    <input type="number" name="anio" class="form-control" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Fecha Concurso</label>
+                                    <input type="date" name="fecha_concurso" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Expediente</label>
+                                    <input type="text" name="expediente" class="form-control">
+                                </div>
+                            </div>
 
-                        <!-- ASIGNATURA -->
-                        <div class="form-group">
-                            <label>Asignatura</label><b>*</b>
-                            <select name="asignatura_id" class="form-control selectpicker" data-live-search="true" required>
-                                <option value="">Seleccione</option>
-                                @foreach ($asignaturas as $asignatura)
-                                    <option value="{{ $asignatura->id }}">{{ $asignatura->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label>Jerarquía</label><b>*</b>
+                                    <select name="jerarquia_id" class="form-control" required>
+                                        <option value="">Seleccione</option>
+                                        @foreach ($jerarquias as $j)
+                                            <option value="{{ $j->id }}">{{ $j->nombre }} , ({{ $j->siglas }})
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Tipo de Concurso</label><b>*</b>
+                                    <select name="tipo_concurso" class="form-control" required>
+                                        <option value="">Seleccione</option>
+                                        <option value="Abierto">Abierto</option>
+                                        <option value="Cerrado">Cerrado</option>
+                                    </select>
+                                </div>
 
-                        <!-- DEPARTAMENTO -->
-                        <div class="form-group">
-                            <label>Departamento</label><b>*</b>
-                            <select name="departamento_id" class="form-control selectpicker" data-live-search="true" required>
-                                <option value="">Seleccione</option>
-                                @foreach ($departamentos as $departamento)
-                                    <option value="{{ $departamento->id }}">{{ $departamento->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                                <div class="col-md-4">
+                                    <label>Modalidad</label><b>*</b>
+                                    <select name="modalidad_concurso" class="form-control" required>
+                                        <option value="">Seleccione</option>
+                                        <option value="Presencial">Presencial</option>
+                                        <option value="Virtual">Virtual</option>
+                                        <option value="Mixta">Mixta</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                        <!-- CARRERAS -->
-                        <div class="form-group">
-                            <label>Carreras (múltiples)</label>
-                            <select name="carreras[]" class="form-control selectpicker" multiple data-live-search="true" title="Seleccione carreras">
-                                @foreach ($carreras as $carrera)
-                                    <option value="{{ $carrera->id }}">{{ $carrera->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="row mt-3">
+                                <div class="col-md-3">
+                                    <label>Inicio Publicidad</label>
+                                    <input type="date" name="inicio_publicidad" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Cierre Publicidad</label>
+                                    <input type="date" name="cierre_publicidad" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Inicio Inscripción</label>
+                                    <input type="date" name="inicio_inscripcion" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Cierre Inscripción</label>
+                                    <input type="date" name="cierre_inscripcion" class="form-control">
+                                </div>
+                            </div>
 
-                        <!-- DOCENTES TITULARES -->
-                        <div class="form-group">
-                            <label>Docentes Titulares</label>
-                            <select name="docentes_titulares[]" class="form-control selectpicker" multiple data-live-search="true" title="Seleccione docentes titulares">
-                                @foreach ($docentes as $docente)
-                                    <option value="{{ $docente->id }}">{{ $docente->nombre_apellido }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="form-group mt-3">
+                                <label>Observaciones</label>
+                                <textarea name="observaciones" class="form-control"></textarea>
+                            </div>
+                            <hr>
+                            
+                            <div class="row mt-3">
+                                <!-- Asignaturas -->
+                                <div class="col-md-4">
+                                    <label>Asignaturas</label>
+                                    <select name="asignaturas[]" class="form-control select2" multiple>
+                                        @foreach ($asignaturas as $a)
+                                            <option value="{{ $a->id }}">{{ $a->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                        <!-- ESTUDIANTES TITULARES -->
-                        <div class="form-group">
-                            <label>Estudiantes Titulares</label>
-                            <select name="estudiantes_titulares[]" class="form-control selectpicker" multiple data-live-search="true" title="Seleccione estudiantes titulares">
-                                @foreach ($estudiantes as $estudiante)
-                                    <option value="{{ $estudiante->id }}">{{ $estudiante->nombre_apellido }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                                <!-- Departamentos -->
+                                <div class="col-md-4">
+                                    <label>Departamentos</label>
+                                    <select name="departamentos[]" class="form-control select2" multiple>
+                                        @foreach ($departamentos as $d)
+                                            <option value="{{ $d->id }}">{{ $d->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
 
-                        <!-- ESTUDIANTES SUPLENTES -->
-                        <div class="form-group">
-                            <label>Estudiantes Suplentes</label>
-                            <select name="estudiantes_suplentes[]" class="form-control selectpicker" multiple data-live-search="true" title="Seleccione estudiantes suplentes">
-                                @foreach ($estudiantes as $estudiante)
-                                    <option value="{{ $estudiante->id }}">{{ $estudiante->nombre_apellido }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                                <!-- Carreras -->
+                                <div class="col-md-4">
+                                    <label>Carreras</label>
+                                    <select name="carreras[]" class="form-control select2" multiple>
+                                        @foreach ($carreras as $c)
+                                            <option value="{{ $c->id }}">{{ $c->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
-                        <!-- VEEDORES -->
-                        <div class="form-group">
-                            <label>Veedores</label>
-                            <select name="veedores[]" class="form-control selectpicker" multiple data-live-search="true" title="Seleccione veedores">
-                                @foreach ($veedores as $veedor)
-                                    <option value="{{ $veedor->id }}">{{ $veedor->nombre_apellido }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                            <div class="row mt-3">
+                            <!-- Docentes -->
+                            <div class="col-md-6">
+                                <label>Docentes Titulares</label>
+                                <select name="docentes_titulares[]" class="form-control select2" multiple>
+                                    @foreach ($docentes as $d)
+                                        <option value="{{ $d->id }}">{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <!-- OTROS CAMPOS -->
-                        <div class="form-group">
-                            <label>Tipo de Concurso</label>
-                            <input type="text" name="tipo_concurso" class="form-control" required>
-                        </div>
+                            <div class="col-md-6">
+                                <label>Docentes Suplentes</label>
+                                <select name="docentes_suplentes[]" class="form-control select2" multiple>
+                                    @foreach ($docentes as $d)
+                                        <option value="{{ $d->id }}">{{ $d->nombre_apellido, }}, DNI: {{ $d->dni }}</option>
+                                       
+                                    @endforeach
+                                </select>
+                            </div>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Fecha del Concurso</label>
-                            <input type="date" name="fecha_concurso" class="form-control">
-                        </div>
+                            <div class="row mt-3">
+                            <!-- Estudiantes -->
+                            <div class="col-md-6">
+                                <label>Estudiantes Titulares</label>
+                                <select name="estudiantes_titulares[]" class="form-control select2" multiple>
+                                    @foreach ($estudiantes as $e)
+                                        <option value="{{ $e->id }}">{{ $e->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Expediente</label>
-                            <input type="text" name="expediente" class="form-control">
-                        </div>
+                            <div class="col-md-6">
+                                <label>Estudiantes Suplentes</label>
+                                <select name="estudiantes_suplentes[]" class="form-control select2" multiple>
+                                    @foreach ($estudiantes as $e)
+                                        <option value="{{ $e->id }}">{{ $e->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Período de Inscripción</label>
-                            <textarea name="periodo_inscripcion" class="form-control"></textarea>
-                        </div>
+                            <div class="row mt-3">
+                            <!-- Veedores -->
+                            <div class="col-md-6">
+                                <label>Veedores</label>
+                                <select name="veedores[]" class="form-control select2" multiple>
+                                    @foreach ($veedores as $v)
+                                        <option value="{{ $v->id }}">{{ $v->nombre_apellido }}, DNI: {{ $v->dni }}, Cargo: {{ $v->cargo }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Observaciones</label>
-                            <textarea name="observaciones" class="form-control"></textarea>
-                        </div>
+                            <div class="row mt-3">
+                            <!-- Inscriptos -->
+                            <div class="col-md-12">
+                                <label>Inscriptos</label>
+                                <select name="inscriptos[]" class="form-control select2" multiple>
+                                    @foreach ($inscriptos as $i)
+                                        <option value="{{ $i->id }}">{{ $i->nombre_apellido }}, DNI: {{ $i->dni }}, Email: {{ $i->email }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            </div>
 
-                        <div class="form-group">
-                            <label>Estado</label>
-                            <textarea name="estado" class="form-control"></textarea>
-                        </div>
+                            <hr>
 
-                        <!-- BOTONES -->
-                        <hr>
-                        <div class="form-group">
-                            <a href="{{ route('concursos.index') }}" class="btn btn-danger">Cancelar</a>
-                            <button type="submit" class="btn btn-primary">Guardar Concurso</button>
-                        </div>
-                    </form>
+                            <div class="form-group mt-3">
+                                <a href="{{ route('concursos.index') }}" class="btn btn-danger">Cancelar</a>
+                                <button type="submit" class="btn btn-primary">Guardar Concurso</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+@endsection
 
-<!-- ========= RECURSOS PARA SELECTPICKER ========= -->
+@section('scripts')
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Bootstrap 4 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Bootstrap Select -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
-
-<!-- Activación -->
-<script>
-    $(document).ready(function () {
-        $('.selectpicker').selectpicker();
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                width: '100%',
+                placeholder: 'Seleccione una o más opciones',
+                allowClear: true
+            });
+        });
+    </script>
 @endsection
