@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             CarreraSeeder::class,
             AsignaturaSeeder::class,
             UsuarioSeeder::class,
+            ConcursoSeeder::class,
 
         ]);
     }

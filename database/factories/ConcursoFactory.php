@@ -101,7 +101,7 @@ class ConcursoFactory extends Factory
             'inicio_inscripcion' => Carbon::now()->subDays(4),
             'cierre_inscripcion' => Carbon::now()->addDays(5),
             'fecha_concurso' => Carbon::now()->addDays(15),
-            'jerarquia_id' => 1, // ajustar según seeder de jerarquías
+            'jerarquia_id' => Jerarquia::inRandomOrder()->first()?->id ?? Jerarquia::factory(),
             'tipo_concurso' => $this->faker->randomElement(['Ordinario', 'Reválida', 'Interino']),
             'modalidad_concurso' => $this->faker->randomElement(['Presencial', 'Virtual', 'Mixta']),
             'expediente' => 'EXP-' . $this->faker->unique()->numerify('2024-####'),
