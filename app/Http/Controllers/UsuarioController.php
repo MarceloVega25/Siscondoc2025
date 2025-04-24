@@ -4,20 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UsuarioController extends Controller
 {
     public function index()
     {
-        $usuarios = Usuario::all()->sortByDesc('id');
+        $usuarios = Usuario::with('roles')->get()->sortByDesc('id');
         return view('usuarios.index', ['usuarios' => $usuarios]);
     }
 
     public function create()
     {
-        return view('usuarios.create');
+        $roles = Role::all();
+        return view('usuarios.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -30,13 +31,7 @@ class UsuarioController extends Controller
             'fecha_ingreso' => 'required|date',
             'password' => 'required|string|min:6',
             'fotografia' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ], [
-            'nombre_apellido.required' => 'El nombre y apellido es obligatorio.',
-            'email.required' => 'El email es obligatorio.',
-            'email.unique' => 'Este email ya está registrado.',
-            'estado.required' => 'El estado es obligatorio.',
-            'fecha_ingreso.required' => 'La fecha de ingreso es obligatoria.',
-            'password.required' => 'La contraseña es obligatoria.',
+            'rol' => 'required',
         ]);
 
         $usuario = new Usuario();
@@ -53,43 +48,39 @@ class UsuarioController extends Controller
             $ruta = $archivo->storeAs('fotografias_usuarios', $nombreArchivo, 'public');
             $usuario->fotografia = $ruta;
         } else {
-            $usuario->fotografia = null; // O dejar sin tocar si ya viene así
+            $usuario->fotografia = null;
         }
-        
 
         $usuario->save();
+        $usuario->assignRole($request->rol); // Asignar rol
 
         return redirect()->route('usuarios.index')->with('mensaje', 'Usuario creado correctamente');
     }
 
     public function show(string $id)
     {
-        $usuario = Usuario::findOrFail($id);
-        return view('usuarios.show', ['usuario' => $usuario]);
+        $usuario = Usuario::with('roles')->findOrFail($id);
+        return view('usuarios.show', compact('usuario'));
     }
 
     public function edit(string $id)
     {
-        $usuario = Usuario::findOrFail($id);
-        return view('usuarios.edit', ['usuario' => $usuario]);
+        $usuario = Usuario::with('roles')->findOrFail($id);
+        $roles = Role::all();
+        $rolActual = $usuario->getRoleNames()->first();
+        return view('usuarios.edit', compact('usuario', 'roles', 'rolActual'));
     }
 
     public function update(Request $request, string $id)
     {
         $request->validate([
             'nombre_apellido' => 'required|string|max:255',
-            'fecha_ingreso' => ['required', 'date'],
+            'fecha_ingreso' => 'required|date',
             'estado' => 'required|string',
             'email' => 'required|email|unique:usuarios,email,' . $id,
             'genero' => 'nullable|string|max:100',
             'fotografia' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ], [
-            'email.unique' => 'El Email ya está registrado.',
-            'nombre_apellido.required' => 'El nombre y apellido es obligatorio.',
-            'fecha_ingreso.required' => 'La fecha de ingreso es obligatoria.',
-            'estado.required' => 'El campo estado es obligatorio.',
-            'email.required' => 'El campo correo electrónico es obligatorio.',
-            'email.email' => 'Debe ingresar un correo válido.',
+            'rol' => 'required',
         ]);
 
         $usuario = Usuario::findOrFail($id);
@@ -100,22 +91,25 @@ class UsuarioController extends Controller
         $usuario->email = $request->email;
         $usuario->genero = $request->genero;
 
-       
+        if ($request->filled('password')) {
+            $usuario->password = bcrypt($request->password);
+        }
 
-if ($request->hasFile('fotografia')) {
-    // Borrar la foto anterior si existe
-    if ($usuario->fotografia && Storage::disk('public')->exists($usuario->fotografia)) {
-        Storage::disk('public')->delete($usuario->fotografia);
-    }
+        if ($request->hasFile('fotografia')) {
+            if ($usuario->fotografia && Storage::disk('public')->exists($usuario->fotografia)) {
+                Storage::disk('public')->delete($usuario->fotografia);
+            }
 
-    // Guardar la nueva foto
-    $archivo = $request->file('fotografia');
-    $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
-    $ruta = $archivo->storeAs('fotografias_usuarios', $nombreArchivo, 'public');
-    $usuario->fotografia = $ruta;
-}
+            $archivo = $request->file('fotografia');
+            $nombreArchivo = time() . '_' . $archivo->getClientOriginalName();
+            $ruta = $archivo->storeAs('fotografias_usuarios', $nombreArchivo, 'public');
+            $usuario->fotografia = $ruta;
+        }
 
         $usuario->save();
+
+        // Actualizar rol
+        $usuario->syncRoles([$request->rol]);
 
         return redirect()->route('usuarios.index')->with('mensaje', 'Datos actualizados correctamente');
     }
@@ -124,8 +118,8 @@ if ($request->hasFile('fotografia')) {
     {
         $usuario = Usuario::findOrFail($id);
 
-        if ($usuario->fotografia && file_exists(public_path('fotografias/' . $usuario->fotografia))) {
-            unlink(public_path('fotografias/' . $usuario->fotografia));
+        if ($usuario->fotografia && Storage::disk('public')->exists($usuario->fotografia)) {
+            Storage::disk('public')->delete($usuario->fotografia);
         }
 
         $usuario->delete();

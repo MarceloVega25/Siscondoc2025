@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\{Concurso, Jerarquia, Asignatura, Departamento, 
     Carrera, Inscripto, Docente, Estudiante, Veedor};
+    
 use Illuminate\Http\Request;
 
 class ConcursoController extends Controller

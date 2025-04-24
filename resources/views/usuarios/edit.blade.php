@@ -83,6 +83,27 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <div class="form-group">
+                                                <label for="rol">Rol de Usuario</label><b>*</b>
+                                                <select name="rol" class="form-control" required>
+                                                    <option value="">Seleccione...</option>
+                                                    @foreach ($roles as $rol)
+                                                        <option value="{{ $rol->name }}" {{ $rolActual == $rol->name ? 'selected' : '' }}>
+                                                            {{ ucfirst($rol->name) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('rol')
+                                                    <small style="color: red;">*Este campo es requerido</small>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                        
                                 </div>
 
                                 <!-- Columna Fotografía -->

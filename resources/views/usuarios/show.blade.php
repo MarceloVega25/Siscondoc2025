@@ -60,6 +60,16 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>Rol de Usuario</label>
+                                            <input type="text" class="form-control"
+                                            value="{{ ucfirst($usuario->getRoleNames()->first() ?? 'Sin rol') }}" disabled>                                     
+                                        </div>
+                                        </div>
+                                    </div>
                             </div>
 
                             <!-- Columna Fotografía -->

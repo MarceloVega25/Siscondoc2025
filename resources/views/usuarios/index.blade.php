@@ -44,7 +44,8 @@
                                     <!--<th>Localidad/Ciudad</th>-->
                                     <!--<th>Cv</th>-->
                                     <!--<th>Foto</th>-->
-                                    <th>Fecha de Ingreso</th>
+                                    <!--<th>Fecha de Ingreso</th>-->
+                                    <th>Rol</th>
                                     <th>Accion</th>
                                 </tr>
                             </thead>
@@ -63,8 +64,15 @@
                                         <!--<td><td>{{ $usuario->direccion }}</td>-->
                                         <!--<td><td>{{ $usuario->localidad_ciudad }}</td>-->
                                         <!--<td><td>{{ $usuario->cv }}</td>-->
-                                        <td>{{ \Carbon\Carbon::parse($usuario->fecha_ingreso)->format('d/m/Y') }}</td>
+                                        <!--<td>{{ \Carbon\Carbon::parse($usuario->fecha_ingreso)->format('d/m/Y') }}</td>-->
                                         <!--<td>{{ \Carbon\Carbon::parse($usuario->created_at)->format('d/m/Y H:i') }}</td>-->
+                                        <td>
+                                            {{ $usuario->getRoleNames()->map(function($rol) {
+                                                return ucfirst($rol);
+                                            })->implode(', ') }}
+                                        </td>
+                                        
+                                        
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 <a href="{{ url('/usuarios', $usuario->id) }}" type="button"

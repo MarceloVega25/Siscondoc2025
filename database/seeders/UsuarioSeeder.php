@@ -7,12 +7,27 @@ use Illuminate\Database\Seeder;
 
 class UsuarioSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Crear 5 usuarios de prueba
-        Usuario::factory()->count(5)->create();
+        // Crear y asignar rol admin
+        $admin = Usuario::factory()->create([
+            'email' => 'admin@example.com',
+        ]);
+        $admin->assignRole('admin');
+
+        // Crear y asignar rol carga
+        $carga = Usuario::factory()->create([
+            'email' => 'carga@example.com',
+        ]);
+        $carga->assignRole('carga');
+
+        // Crear y asignar rol consulta
+        $consulta = Usuario::factory()->create([
+            'email' => 'consulta@example.com',
+        ]);
+        $consulta->assignRole('consulta');
+
+        // Crear 2 usuarios adicionales sin rol asignado (opcional)
+        Usuario::factory()->count(2)->create();
     }
 }

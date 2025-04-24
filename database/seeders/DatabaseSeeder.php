@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             //'email' => 'test@example.com',
         //]);
         $this->call([
+            RolSeeder::class, //primero para que no genere problemas en la migracion
             JerarquiaSeeder::class,
             DepartamentoSeeder::class,
             CarreraSeeder::class,
@@ -31,6 +32,7 @@ class DatabaseSeeder extends Seeder
             InscriptoSeeder::class,
             AdscriptoSeeder::class,
             ConcursoSeeder::class,
+            AdscripcionSeeder::class,
         ]);
         
     }

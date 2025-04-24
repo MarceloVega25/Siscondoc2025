@@ -8,6 +8,8 @@ use App\Models\Docente;
 use App\Models\Estudiante;
 use App\Models\Veedor;
 use App\Models\Usuario;
+use App\Models\Concurso;
+use App\Models\Adscripcion;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -21,11 +23,15 @@ public function index(){
     $estudiantes = Estudiante::all();
     $veedores = Veedor::all();
     $usuarios = Usuario::all();
+    $concursos = Concurso::all();
+    $adscripciones = Adscripcion::all();
     return view('index',['inscriptos' => $inscriptos,
     'adscriptos' => $adscriptos, 
     'docentes' => $docentes, 
     'estudiantes' => $estudiantes,
     'veedores'=>$veedores,
-'usuarios'=>$usuarios]);
+'usuarios'=>$usuarios,
+'concursos'=>$concursos,
+'adscripciones'=>$adscripciones]);
 }
 }

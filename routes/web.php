@@ -83,9 +83,11 @@ Route::resource('concursos', \App\Http\Controllers\ConcursoController::class);
 
 
 // Rutas para Adscripciones
-Route::middleware('auth')->group(function () {//protege el grupo de la ruta
-Route::resource('adscripciones', \App\Http\Controllers\AdscripcionController::class)->middleware('auth');
+Route::middleware('auth')->group(function () {
+    Route::resource('adscripciones', \App\Http\Controllers\AdscripcionController::class)
+        ->parameters(['adscripciones' => 'adscripcion']);
 });
+
 
 // Rutas para Docentes
 Route::middleware('auth')->group(function () {//protege el grupo de la ruta

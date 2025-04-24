@@ -244,7 +244,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item">
                         <a href="#" class="nav-link active bg-dark text-white">
                             <i class="nav-icon fas">
-                                <i class="bi bi-file-earmark-person-fill"></i>
+                                <i class="bi bi-person-add"></i>
                             </i>
 
                             <p>
@@ -272,7 +272,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item">
                         <a href="#" class="nav-link active bg-primary text-white">
                             <i class="nav-icon fas">
-                                <i class="bi bi-clipboard2-check-fill"></i>
+                                <i class="bi bi-journal-text"></i>
                             </i>
                             <p>
                                 Gestión Concursos
@@ -284,7 +284,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <li class="nav-item">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fas">
-                                        <i class="bi bi-clipboard2-check-fill"></i>
+                                        <i class="bi bi-file-earmark-person-fill"></i>
                                     </i>
                                     <p>
                                         Inscriptos
@@ -343,7 +343,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item">
                         <a href="#" class="nav-link active bg-primary text-white">
                             <i class="nav-icon fas">
-                                <i class="bi bi-clipboard2-check-fill"></i>
+                                <i class="bi bi-clipboard2-check"></i>
                             </i>
                             <p>
                                 Gestión Adscripciones
@@ -413,7 +413,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item">
                         <a href="#" class="nav-link active bg-primary text-white">
                             <i class="nav-icon fas">
-                                <i class="bi bi-clipboard2-check-fill"></i>
+                                <i class="bi bi-buildings"></i>
                             </i>
                             <p>
                                 Gestión Academica
@@ -426,7 +426,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <li class="nav-item">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fas">
-                                        <i class="bi bi-clipboard2-check-fill"></i>
+                                        <i class="bi bi-diagram-3-fill"></i>
                                     </i>
                                     <p>
                                         Jerarquia
@@ -453,7 +453,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <li class="nav-item">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fas">
-                                        <i class="bi bi-clipboard2-check-fill"></i>
+                                        <i class="bi bi-book-fill"></i>
                                     </i>
                                     <p>
                                         Asignatura
@@ -479,7 +479,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <li class="nav-item">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fas">
-                                        <i class="bi bi-file-earmark-person-fill"></i>
+                                        <i class="bi bi-collection-fill"></i>
                                     </i>
                                     <p>
                                         Departamento
@@ -506,7 +506,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             <li class="nav-item">
                                 <a href="#" class="nav-link active">
                                     <i class="nav-icon fas">
-                                        <i class="bi bi-clipboard2-check-fill"></i>
+                                        <i class="bi bi-mortarboard-fill"></i>
                                     </i>
                                     <p>
                                         Carreras
@@ -535,7 +535,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <li class="nav-item">
                         <a href="#" class="nav-link active bg-primary text-white">
                             <i class="nav-icon fas">
-                                <i class="bi bi-clipboard2-check-fill"></i>
+                                <i class="bi bi-people"></i>
                             </i>
                             <p>
                                 Gestión Jurados
@@ -630,7 +630,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a href="{{ url('informes') }}" class="nav-link active bg-primary text-white">
                         <i class="nav-icon fas">
-                            <i class="bi bi-info-square-fill"></i>
+                            <i class="bi bi-info-square"></i>
                         </i>
                         <p>
                             Informes
@@ -642,7 +642,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a href="{{ route('notificacion') }}" class="nav-link active bg-primary text-white">
                         <i class="nav-icon fas">
-                            <i class="bi bi-envelope-fill"></i>
+                            <i class="bi bi-envelope"></i>
                         </i>
                         <p>
                             Notificaciones

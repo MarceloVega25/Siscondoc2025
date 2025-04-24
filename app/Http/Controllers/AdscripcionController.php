@@ -7,7 +7,7 @@ use App\Models\Jerarquia;
 use App\Models\Asignatura;
 use App\Models\Departamento;
 use App\Models\Carrera;
-use App\Models\Inscripto;
+use App\Models\Adscripto;
 use App\Models\Docente;
 use App\Models\Estudiante;
 use App\Models\Veedor;
@@ -17,8 +17,10 @@ class AdscripcionController extends Controller
 {
     public function index()
     {
-        $adscripciones = Adscripcion::with(['jerarquia', 'asignatura', 'departamento'])->get();
-        return view('adscripciones.index', compact('adscripciones'));
+        $adscripciones = Adscripcion::with(['jerarquia', 'carreras','asignaturas', 'departamentos'])
+        ->orderBy('id', 'desc')
+                         ->get();
+        return view('adscripciones.index', ['adscripciones' =>$adscripciones]);
     }
 
     public function create()
@@ -28,7 +30,7 @@ class AdscripcionController extends Controller
             'asignaturas' => Asignatura::all(),
             'departamentos' => Departamento::all(),
             'carreras' => Carrera::all(),
-            'inscriptos' => Inscripto::all(),
+            'adscriptos' => Adscripto::all(),
             'docentes' => Docente::all(),
             'estudiantes' => Estudiante::all(),
             'veedores' => Veedor::all(),
@@ -39,55 +41,75 @@ class AdscripcionController extends Controller
     {
         $request->validate([
             'numero' => 'required',
-            'año' => 'required|numeric',
+            'anio' => 'required|numeric',
             'jerarquia_id' => 'required|exists:jerarquias,id',
-            'asignatura_id' => 'required|exists:asignaturas,id',
-            'departamento_id' => 'required|exists:departamentos,id',
             'tipo_adscripcion' => 'required',
         ]);
 
         $adscripcion = Adscripcion::create($request->only([
-            'numero', 'año', 'jerarquia_id', 'asignatura_id', 'departamento_id',
-            'tipo_adscripcion', 'fecha_adscripcion', 'expediente',
-            'periodo_inscripcion', 'observaciones', 'estado',
+            'numero', 'anio', 'jerarquia_id', 'tipo_adscripcion', 'modalidad_adscripcion',
+            'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
+            'fecha_adscripcion', 'expediente', 'observaciones', 'estado', 'comentario'
         ]));
 
-        // Relaciones múltiples
+        $adscripcion->registrarEstado('Adscripcion creada', 'Registro inicial del adscripcion');
+
+         // Relaciones múltiples
         $adscripcion->carreras()->sync($request->input('carreras', []));
-        $adscripcion->inscriptos()->sync($request->input('inscriptos', []));
+        $adscripcion->asignaturas()->sync($request->input('asignaturas', []));
+        $adscripcion->departamentos()->sync($request->input('departamentos', []));
+        $adscripcion->adscriptos()->sync($request->input('adscriptos', []));
         $adscripcion->veedores()->sync($request->input('veedores', []));
 
         // Relaciones con pivot (tipo)
-        if ($request->has('docentes')) {
-            foreach ($request->docentes as $docente_id => $tipo) {
-                $adscripcion->docentes()->attach($docente_id, ['tipo' => $tipo]);
+        if ($request->has('docentes_titulares')) {
+            foreach ($request->docentes_titulares as $id) {
+                $adscripcion->docentes()->attach($id, ['tipo' => 'titular']);
             }
         }
 
-        if ($request->has('estudiantes')) {
-            foreach ($request->estudiantes as $estudiante_id => $tipo) {
-                $adscripcion->estudiantes()->attach($estudiante_id, ['tipo' => $tipo]);
+        if ($request->has('docentes_suplentes')) {
+            foreach ($request->docentes_suplentes as $id) {
+                $adscripcion->docentes()->attach($id, ['tipo' => 'suplente']);
             }
         }
 
-        return redirect()->route('adscripciones.index')->with('success', 'Adscripcion creada correctamente.');
+        if ($request->has('estudiantes_titulares')) {
+            foreach ($request->estudiantes_titulares as $id) {
+                $adscripcion->estudiantes()->attach($id, ['tipo' => 'titular']);
+            }
+        }
+
+        if ($request->has('estudiantes_suplentes')) {
+            foreach ($request->estudiantes_suplentes as $id) {
+                $adscripcion->estudiantes()->attach($id, ['tipo' => 'suplente']);
+            }
+        }
+
+        return redirect()->route('adscripciones.index')->with('mensaje', 'Adscripción creada correctamente.');
     }
 
     public function show(Adscripcion $adscripcion)
     {
         $adscripcion->load([
-            'jerarquia', 'asignatura', 'departamento',
-            'carreras', 'inscriptos', 'veedores', 'docentes', 'estudiantes'
+            'jerarquia', 'asignaturas', 'departamentos',
+            'carreras', 'adscriptos', 'veedores',
+            'docentesTitulares', 'docentesSuplentes',
+            'estudiantesTitulares', 'estudiantesSuplentes',
+            'estados'
         ]);
 
         return view('adscripciones.show', compact('adscripcion'));
     }
 
+
     public function edit(Adscripcion $adscripcion)
     {
         $adscripcion->load([
-            'jerarquia', 'asignatura', 'departamento',
-            'carreras', 'inscriptos', 'veedores', 'docentes', 'estudiantes'
+            'jerarquia', 'asignaturas', 'departamentos',
+            'carreras', 'adscriptos', 'veedores',
+            'docentesTitulares', 'docentesSuplentes',
+            'estudiantesTitulares', 'estudiantesSuplentes',
         ]);
 
         return view('adscripciones.edit', [
@@ -96,7 +118,7 @@ class AdscripcionController extends Controller
             'asignaturas' => Asignatura::all(),
             'departamentos' => Departamento::all(),
             'carreras' => Carrera::all(),
-            'inscriptos' => Inscripto::all(),
+            'adscriptos' => Adscripto::all(),
             'docentes' => Docente::all(),
             'estudiantes' => Estudiante::all(),
             'veedores' => Veedor::all(),
@@ -107,44 +129,56 @@ class AdscripcionController extends Controller
     {
         $request->validate([
             'numero' => 'required',
-            'año' => 'required|numeric',
+            'anio' => 'required|numeric',
             'jerarquia_id' => 'required|exists:jerarquias,id',
-            'asignatura_id' => 'required|exists:asignaturas,id',
-            'departamento_id' => 'required|exists:departamentos,id',
             'tipo_adscripcion' => 'required',
         ]);
 
         $adscripcion->update($request->only([
-            'numero', 'año', 'jerarquia_id', 'asignatura_id', 'departamento_id',
-            'tipo_adscripcion', 'fecha_adscripcion', 'expediente',
-            'periodo_inscripcion', 'observaciones', 'estado',
+            'numero', 'anio', 'jerarquia_id', 'tipo_adscripcion', 'modalidad_adscripcion',
+            'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
+            'fecha_adscripcion', 'expediente', 'observaciones', 'estado', 'comentario'
         ]));
+
+        $adscripcion->registrarEstado('Datos actualizados', 'Actualización manual del adscripción');
 
         // Actualizar relaciones
         $adscripcion->carreras()->sync($request->input('carreras', []));
-        $adscripcion->inscriptos()->sync($request->input('inscriptos', []));
+        $adscripcion->asignaturas()->sync($request->input('asignaturas', []));
+        $adscripcion->departamentos()->sync($request->input('departamentos', []));
+        $adscripcion->adscriptos()->sync($request->input('adscriptos', []));
         $adscripcion->veedores()->sync($request->input('veedores', []));
 
         $adscripcion->docentes()->detach();
-        if ($request->has('docentes')) {
-            foreach ($request->docentes as $docente_id => $tipo) {
-                $adscripcion->docentes()->attach($docente_id, ['tipo' => $tipo]);
+        if ($request->has('docentes_titulares')) {
+            foreach ($request->docentes_titulares as $id) {
+                $adscripcion->docentes()->attach($id, ['tipo' => 'titular']);
+            }
+        }
+        if ($request->has('docentes_suplentes')) {
+            foreach ($request->docentes_suplentes as $id) {
+                $adscripcion->docentes()->attach($id, ['tipo' => 'suplente']);
             }
         }
 
         $adscripcion->estudiantes()->detach();
-        if ($request->has('estudiantes')) {
-            foreach ($request->estudiantes as $estudiante_id => $tipo) {
-                $adscripcion->estudiantes()->attach($estudiante_id, ['tipo' => $tipo]);
+        if ($request->has('estudiantes_titulares')) {
+            foreach ($request->estudiantes_titulares as $id) {
+                $adscripcion->estudiantes()->attach($id, ['tipo' => 'titular']);
+            }
+        }
+        if ($request->has('estudiantes_suplentes')) {
+            foreach ($request->estudiantes_suplentes as $id) {
+                $adscripcion->estudiantes()->attach($id, ['tipo' => 'suplente']);
             }
         }
 
-        return redirect()->route('adscripciones.index')->with('success', 'Adscripcion actualizada correctamente.');
+        return redirect()->route('adscripciones.index')->with('mensaje', 'Adscripción actualizada correctamente.');
     }
 
     public function destroy(Adscripcion $adscripcion)
     {
         $adscripcion->delete();
-        return redirect()->route('adscripciones.index')->with('success', 'Adscripcion eliminada correctamente.');
+        return redirect()->route('adscripciones.index')->with('mensaje', 'Adscripción eliminada correctamente.');
     }
 }

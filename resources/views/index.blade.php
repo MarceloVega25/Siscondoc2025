@@ -126,8 +126,48 @@
       </div>
     </div>
 
+    <!-- ./col -->
+    <div class="col-lg-3">
+      <!-- small box -->
+      <div class="small-box bg-info" style="height: 160px">
+        <div class="inner">
+          <?php $contador_de_concurso = 0; ?>
+          @foreach ($concursos as $concurso)
+          <?php $contador_de_concurso = $contador_de_concurso + 1;?>            
+          @endforeach
+          <h3><?=$contador_de_concurso;?></h3>
+
+          <p>Concursos</p>
+        </div>
+        <div class="icon">
+          <i class="bi bi-journal-text"></i>
+        </div>
+        <a href="{{ url('concursos') }}" class="small-box-footer" style="margin-top: 20px">Más información <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
+    <!-- ./col -->
+    <div class="col-lg-3">
+      <!-- small box -->
+      <div class="small-box bg-orange" style="height: 160px">
+        <div class="inner">
+          <?php $contador_de_adscripcion = 0; ?>
+          @foreach ($adscripciones as $adscripcion)
+          <?php $contador_de_adscripcion = $contador_de_adscripcion + 1;?>            
+          @endforeach
+          <h3><?=$contador_de_adscripcion;?></h3>
+
+          <p>Adscripciones</p>
+        </div>
+        <div class="icon">
+          <i class="bi bi-clipboard2-check"></i>
+        </div>
+        <a href="{{ url('adscripciones') }}" class="small-box-footer" style="margin-top: 20px">Más información <i class="fas fa-arrow-circle-right"></i></a>
+      </div>
+    </div>
+
   </div>
 
-</div>
+  </div>
 
 @endsection
