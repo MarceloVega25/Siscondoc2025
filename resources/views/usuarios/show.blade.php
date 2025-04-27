@@ -19,21 +19,24 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Nombre y Apellido</label>
-                                            <input type="text" class="form-control" value="{{ $usuario->nombre_apellido }}" disabled>
+                                            <input type="text" class="form-control"
+                                                value="{{ $usuario->nombre_apellido }}" disabled>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Fecha de Ingreso</label>
-                                            <input type="date" class="form-control" value="{{ $usuario->fecha_ingreso }}" disabled>
+                                            <input type="date" class="form-control" value="{{ $usuario->fecha_ingreso }}"
+                                                disabled>
                                         </div>
                                     </div>
 
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Estado</label>
-                                            <input type="text" class="form-control" value="{{ ucfirst($usuario->estado) }}" disabled>
+                                            <input type="text" class="form-control"
+                                                value="{{ ucfirst($usuario->estado) }}" disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -42,7 +45,8 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Email</label>
-                                            <input type="email" class="form-control" value="{{ $usuario->email }}" disabled>
+                                            <input type="email" class="form-control" value="{{ $usuario->email }}"
+                                                disabled>
                                         </div>
                                     </div>
 
@@ -56,7 +60,8 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Género</label>
-                                            <input type="text" class="form-control" value="{{ $usuario->genero }}" disabled>
+                                            <input type="text" class="form-control" value="{{ $usuario->genero }}"
+                                                disabled>
                                         </div>
                                     </div>
                                 </div>
@@ -66,10 +71,11 @@
                                         <div class="form-group">
                                             <label>Rol de Usuario</label>
                                             <input type="text" class="form-control"
-                                            value="{{ ucfirst($usuario->getRoleNames()->first() ?? 'Sin rol') }}" disabled>                                     
-                                        </div>
+                                                value="{{ ucfirst($usuario->getRoleNames()->first() ?? 'Sin rol') }}"
+                                                disabled>
                                         </div>
                                     </div>
+                                </div>
                             </div>
 
                             <!-- Columna Fotografía -->
@@ -78,9 +84,11 @@
                                     <label>Fotografía</label>
                                     <center>
                                         @php
-                                            $fotoPath = (!empty($usuario->fotografia) && file_exists(public_path('storage/' . $usuario->fotografia)))
-                                                ? asset('storage/' . $usuario->fotografia)
-                                                : asset('images/' . strtolower($usuario->genero) . '.jpg');
+                                            $fotoPath =
+                                                !empty($usuario->fotografia) &&
+                                                file_exists(public_path('storage/' . $usuario->fotografia))
+                                                    ? asset('storage/' . $usuario->fotografia)
+                                                    : asset('images/' . strtolower($usuario->genero) . '.jpg');
                                         @endphp
                                         <img src="{{ $fotoPath }}" class="img-thumbnail" width="150">
                                     </center>
@@ -92,8 +100,19 @@
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <hr>
+                                @role('admin')
                                 <a href="{{ route('usuarios.index') }}" class="btn btn-danger">Volver al listado</a>
-                                <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-warning">Editar Usuario</a>
+                                
+                                    <a href="{{ route('usuarios.edit', $usuario->id) }}" class="btn btn-warning">Editar
+                                        Usuario</a>
+                                        @endrole
+
+                                @hasanyrole('carga|consulta')
+                                    <a href="{{ url('/') }}" class="btn btn-primary">
+                                        Volver Atrás
+                                    </a>
+                                @endhasanyrole
+
                             </div>
                         </div>
 

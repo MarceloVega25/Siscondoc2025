@@ -48,12 +48,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
        <!-- Navbar -->
 <nav class="main-header navbar navbar-expand bg-info text-white">
     <!-- Left navbar links -->
-    <ul class="navbar-nav">
+    
+    <!--<ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button">
                 <i class="fas fa-bars"></i>
             </a>
-        </li>
+        </li>-->
+
         <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ url('/') }}" class="nav-link text-white">
                 Sistema de Gestión de Concursos Docentes - FICH
@@ -206,13 +208,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
                         @php
-                            $usuario = Auth::user();
+                        $usuario = Auth::user();
+                        $src = asset('images/otro.jpg'); // Imagen por defecto
+                    
+                        if ($usuario) {
                             $foto = $usuario->fotografia;
-
+                    
                             if ($foto && file_exists(public_path('storage/' . $foto))) {
                                 $src = asset('storage/' . $foto);
                             } else {
-                                $genero = strtolower($usuario->genero);
+                                $genero = strtolower($usuario->genero ?? 'otro');
                                 switch ($genero) {
                                     case 'femenino':
                                         $src = asset('images/femenino.jpg');
@@ -225,12 +230,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         break;
                                 }
                             }
-                        @endphp
-                        <img src="{{ $src }}" class="img-circle elevation-2" alt="Imagen del usuario">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="text-success">{{ $usuario->nombre_apellido }}</a>
-                    </div>
+                        }
+                    @endphp
+                    
+                    <img src="{{ $src }}" class="img-circle elevation-2" alt="Imagen del usuario">
+</div>
+
+<div class="info d-flex align-items-center">
+    @php
+    $rol = $usuario->getRoleNames()->first() ?? 'sin_rol';
+    $color = match($rol) {
+        'admin' => 'bg-danger',    // rojo
+        'carga' => 'bg-primary',   // azul
+        'consulta' => 'bg-success',// verde
+        default => 'bg-secondary', // gris si no tiene rol
+    };
+@endphp
+
+<span class="badge {{ $color }} rounded-circle" style="width: 10px; height: 10px; display: inline-block;"></span>
+
+    <a href="{{ route('usuarios.show', $usuario->id ?? 0) }}" class="text-success me-2">
+        {{ $usuario->nombre_apellido ?? 'Invitado' }}
+    </a>
+
+    
+</div>
+
+                
+                
+                
                 </div>
             </div>
 
