@@ -131,13 +131,14 @@
                             </div>
                         </div>
 
-                        <hr>
 
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('concursos.index') }}" class="btn btn-danger">Volver al listado</a>
+                                @role('admin|carga')
                                 <a href="{{ route('concursos.edit', $concurso->id) }}" class="btn btn-warning">Editar Concurso</a>
+                            @endrole
                             </div>
                         </div>
 

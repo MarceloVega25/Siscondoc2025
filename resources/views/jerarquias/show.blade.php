@@ -33,7 +33,9 @@
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('jerarquias.index') }}" class="btn btn-danger">Volver al listado</a>
+                                @role('admin|carga')
                                 <a href="{{ route('jerarquias.edit', $jerarquia->id) }}" class="btn btn-warning">Editar Jerarquía</a>
+                            @endrole
                             </div>
                         </div>
 

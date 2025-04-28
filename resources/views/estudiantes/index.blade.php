@@ -21,9 +21,11 @@
                     <div class="card-header">
                         <h3 class="card-title"><b>ESTUDIANTES REGISTRADOS</b></h3>
                         <div class="card-tools">
+                            @role('admin|carga')
                             <a href="{{ route('estudiantes.buscar') }}" class="btn btn-primary">
                                 <i class="bi bi-person-add"></i>Agregar Nuevo Estudiante
                             </a>
+                            @endrole
                         </div>
                     </div>
 
@@ -69,6 +71,7 @@
                                                 <a href="{{ url('/estudiantes', $estudiante->id) }}" type="button"
                                                     class="btn btn-info"><i class="bi bi-eye"></i></a>
 
+                                                    @role('admin|carga')
                                                 <a href="{{ route('estudiantes.edit', $estudiante->id) }}" type="button"
                                                     class="btn btn-success"><i class="bi bi-pencil"></i></a>
 
@@ -79,7 +82,7 @@
                                                             <i class="bi bi-trash3"></i>
                                                         </button>
                                                     </form>
-                                                    
+                                                    @endrole
                                             </div>
                                         </td>
 

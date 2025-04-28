@@ -20,9 +20,11 @@
                     <div class="card-header">
                         <h3 class="card-title"><b>CONCURSOS REGISTRADOS</b></h3>
                         <div class="card-tools">
+                            @role('admin|carga')
                             <a href="{{ route('concursos.create') }}" class="btn btn-primary">
                                 <i class="bi bi-folder-plus"></i> Agregar Nuevo Concurso
                             </a>
+                            @endrole
                         </div>
                     </div>
 
@@ -53,6 +55,8 @@
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Acciones">
                                                 <a href="{{ route('concursos.show', $concurso->id) }}" class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                                
+                                                @role('admin|carga')
                                                 <a href="{{ route('concursos.edit', $concurso->id) }}" class="btn btn-success"><i class="bi bi-pencil"></i></a>
                                                 <form id="delete-form-{{ $concurso->id }}" action="{{ route('concursos.destroy', $concurso->id) }}" method="POST" style="display: inline;">
                                                     @csrf
@@ -61,6 +65,7 @@
                                                         <i class="bi bi-trash3"></i>
                                                     </button>
                                                 </form>
+                                                @endrole
                                             </div>
                                         </td>
                                     </tr>

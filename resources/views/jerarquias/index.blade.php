@@ -21,9 +21,11 @@
                     <div class="card-header">
                         <h3 class="card-title"><b>JERARQUIAS REGISTRADAS</b></h3>
                         <div class="card-tools">
+                            @role('admin|carga')
                             <a href="{{ url('/jerarquias/create') }}" class="btn btn-primary">
                                 <i class="bi bi-person-add"></i>Agregar Nueva Jerarquia
                             </a>
+                            @endrole
                         </div>
                     </div>
 
@@ -71,6 +73,7 @@
                                                 <a href="{{ url('/jerarquias', $jerarquia->id) }}" type="button"
                                                     class="btn btn-info"><i class="bi bi-eye"></i></a>
 
+                                                    @role('admin|carga')
                                                 <a href="{{ route('jerarquias.edit', $jerarquia->id) }}" type="button"
                                                     class="btn btn-success"><i class="bi bi-pencil"></i></a>
 
@@ -81,7 +84,7 @@
                                                             <i class="bi bi-trash3"></i>
                                                         </button>
                                                     </form>
-                                                    
+                                                    @endrole
                                             </div>
                                         </td>
 

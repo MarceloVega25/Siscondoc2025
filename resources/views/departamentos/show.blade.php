@@ -33,8 +33,10 @@
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('departamentos.index') }}" class="btn btn-danger">Volver al listado</a>
-                                <a href="{{ route('departamentos.edit', $departamento->id) }}" class="btn btn-warning">Editar Departamento</a>
-                            </div>
+                                @role('admin|carga')
+                                 <a href="{{ route('departamentos.edit', $departamento->id) }}" class="btn btn-warning">Editar Departamento</a>
+                            @endrole
+                                </div>
                         </div>
 
                     </div>

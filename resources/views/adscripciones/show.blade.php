@@ -137,7 +137,9 @@
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('adscripciones.index') }}" class="btn btn-danger">Volver al listado</a>
+                                @role('admin|carga')
                                 <a href="{{ route('adscripciones.edit', $adscripcion->id) }}" class="btn btn-warning">Editar Adscripción</a>
+                           @endrole
                             </div>
                         </div>
 

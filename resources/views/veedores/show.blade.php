@@ -110,7 +110,9 @@
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('veedores.index') }}" class="btn btn-danger">Volver al listado</a>
+                                @role('admin|carga')
                                 <a href="{{ route('veedores.edit', $veedor->id) }}" class="btn btn-warning">Editar Veedor</a>
+                           @endrole
                             </div>
                         </div>
 

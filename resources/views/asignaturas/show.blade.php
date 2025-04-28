@@ -33,7 +33,9 @@
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('asignaturas.index') }}" class="btn btn-danger">Volver al listado</a>
+                                @role('admin|carga')
                                 <a href="{{ route('asignaturas.edit', $asignatura->id) }}" class="btn btn-warning">Editar Asignatura</a>
+                                @endrole
                             </div>
                         </div>
 

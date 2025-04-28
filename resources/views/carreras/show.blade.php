@@ -33,7 +33,9 @@
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('carreras.index') }}" class="btn btn-danger">Volver al listado</a>
+                                @role('admin|carga')
                                 <a href="{{ route('carreras.edit', $carrera->id) }}" class="btn btn-warning">Editar Carrera</a>
+                            @endrole
                             </div>
                         </div>
 

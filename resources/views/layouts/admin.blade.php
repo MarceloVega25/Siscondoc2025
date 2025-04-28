@@ -269,7 +269,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                    <li class="nav-item">
+               @role('admin')
+               <li class="nav-item">
                         <a href="#" class="nav-link active bg-dark text-white">
                             <i class="nav-icon fas">
                                 <i class="bi bi-person-add"></i>
@@ -296,7 +297,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </li>
                         </ul>
                     </li>
-
+@endrole
                     <li class="nav-item">
                         <a href="#" class="nav-link active bg-primary text-white">
                             <i class="nav-icon fas">
@@ -321,6 +322,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('inscriptos.buscar') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -328,6 +330,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </a>
 
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('inscriptos.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -349,6 +352,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('concursos.create') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -356,6 +360,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </a>
 
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('concursos.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -392,12 +397,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('adscriptos.buscar') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Adscriptos"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('adscriptos.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -419,6 +426,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('adscripciones.create') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -426,6 +434,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         </a>
 
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('adscripciones.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -463,12 +472,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('jerarquias.create') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Jerarquia"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('jerarquias.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -490,12 +501,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('asignaturas.create') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Asignatura"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('asignaturas.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -516,12 +529,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('departamentos.create') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Departamento"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('departamentos.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -543,12 +558,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('carreras.create') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Carrera"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('carreras.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -585,12 +602,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('docentes.buscar') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Docente"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('docentes.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -612,12 +631,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('estudiantes.buscar') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Estudiante"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('estudiantes.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -639,12 +660,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     </p>
                                 </a>
                                 <ul class="nav nav-treeview">
+                                    @role('admin|carga')
                                     <li class="nav-item">
                                         <a href="{{ route('veedores.buscar') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
                                             <p>Nuevo "Veedor"</p>
                                         </a>
                                     </li>
+                                    @endrole
                                     <li class="nav-item">
                                         <a href="{{ route('veedores.index') }}" class="nav-link">
                                             <i class="far fa-circle nav-icon"></i>
@@ -666,7 +689,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </i>
                         </p>
                     </a>
-
+                    @role('admin|carga')
                 <li class="nav-item">
                     <a href="{{ route('notificacion') }}" class="nav-link active bg-primary text-white">
                         <i class="nav-icon fas">
@@ -675,10 +698,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <p>
                             Notificaciones
                             <i class="right fas fa-angle-left"></i>
-                            </i>
                         </p>
                     </a>
-
+                </li>
+                @endrole
                 <li class="nav-item">
 
                     <a class="nav-link" href="{{ route('logout') }}"
