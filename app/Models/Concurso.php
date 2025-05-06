@@ -24,6 +24,7 @@ class Concurso extends Model
         'observaciones',
         'estado',
         'comentario',
+        'designado_id',
     ];
 
     // Relación con jerarquía
@@ -121,4 +122,11 @@ class Concurso extends Model
             ->wherePivot('tipo', 'suplente')
             ->withTimestamps();
     }
+    // Concurso.php
+
+public function designado()
+{
+    return $this->belongsTo(\App\Models\Inscripto::class, 'designado_id');
+}
+
 }

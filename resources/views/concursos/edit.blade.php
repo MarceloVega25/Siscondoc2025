@@ -45,6 +45,7 @@
                                 <div class="col-md-4">
                                     <label>Jerarquía</label><b>*</b>
                                     <select name="jerarquia_id" class="form-control" required>
+                                        <option value="">Seleccione una Jerarquia</option>
                                         @foreach ($jerarquias as $j)
                                             <option value="{{ $j->id }}" {{ $concurso->jerarquia_id == $j->id ? 'selected' : '' }}>
                                                 {{ $j->nombre }} ({{ $j->siglas }})
@@ -137,7 +138,7 @@
                                     <label>Docentes Titulares</label>
                                     <select name="docentes_titulares[]" class="form-control select2" multiple>
                                         @foreach ($docentes as $d)
-                                            <option value="{{ $d->id }}" {{ isSelected($concurso->docentesTitulares, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                            <option value="{{ $d->id }}" {{ isSelected($concurso->docentesTitulares, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}, Institución: {{ $d->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -145,7 +146,7 @@
                                     <label>Docentes Suplentes</label>
                                     <select name="docentes_suplentes[]" class="form-control select2" multiple>
                                         @foreach ($docentes as $d)
-                                            <option value="{{ $d->id }}" {{ isSelected($concurso->docentesSuplentes, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                            <option value="{{ $d->id }}" {{ isSelected($concurso->docentesSuplentes, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}, Institución: {{ $d->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -156,7 +157,7 @@
                                     <label>Estudiantes Titulares</label>
                                     <select name="estudiantes_titulares[]" class="form-control select2" multiple>
                                         @foreach ($estudiantes as $e)
-                                            <option value="{{ $e->id }}" {{ isSelected($concurso->estudiantesTitulares, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}</option>
+                                            <option value="{{ $e->id }}" {{ isSelected($concurso->estudiantesTitulares, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}, Institución: {{ $e->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -164,7 +165,7 @@
                                     <label>Estudiantes Suplentes</label>
                                     <select name="estudiantes_suplentes[]" class="form-control select2" multiple>
                                         @foreach ($estudiantes as $e)
-                                            <option value="{{ $e->id }}" {{ isSelected($concurso->estudiantesSuplentes, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}</option>
+                                            <option value="{{ $e->id }}" {{ isSelected($concurso->estudiantesSuplentes, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}, Institución: {{ $e->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -190,6 +191,20 @@
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <label>Designado</label>
+                                    <select name="designado_id" class="form-control">
+                                        <option value="">Seleccione un inscripto designado</option>
+                                        @foreach ($concurso->inscriptos as $i)
+                                            <option value="{{ $i->id }}" {{ $concurso->designado_id == $i->id ? 'selected' : '' }}>
+                                                {{ $i->nombre_apellido }}, DNI: {{ $i->dni }}, Email: {{ $i->email }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                
                             </div>
 
                             <hr>

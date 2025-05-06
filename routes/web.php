@@ -16,6 +16,7 @@ use App\Http\Controllers\UsuarioController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ConcursoController;
 use App\Http\Controllers\AdscripcionController;
+use App\Http\Controllers\InformeController;
 
 // Ruta principal con middleware de autenticación
 //Route::get('/', function () {return view('index');})->middleware('auth');
@@ -24,7 +25,7 @@ use App\Http\Controllers\AdscripcionController;
 Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])
     ->name('home')->middleware('auth');
 
-    Auth::routes();
+   // Auth::routes();
 // Desactivar registro de usuarios en Auth
 Auth::routes(['register' => false]);
 
@@ -240,9 +241,28 @@ Route::middleware(['auth', 'role:admin|carga|consulta'])->group(function () {
     });
 
 // ----------------- Informes -----------------
-Route::get('/informes', function () {
-    return view('informes.index');
-})->middleware('auth')->name('informes.index');
+Route::middleware(['auth'])->group(function () {
+
+    // Vista unificada (opcional)
+    Route::get('/informes', [App\Http\Controllers\InformeController::class, 'index'])->name('informes.index');
+
+    // Vistas separadas
+    Route::get('/informes/fecha', [App\Http\Controllers\InformeController::class, 'porFecha'])->name('informes.porFecha');
+    Route::get('/informes/anio', [App\Http\Controllers\InformeController::class, 'porAnio'])->name('informes.porAnio');
+
+    // Historial de informes generados
+    Route::get('/informes/historico', [App\Http\Controllers\InformeController::class, 'historico'])->name('informes.historico');
+
+    // Acciones POST para generar PDF
+    Route::post('/informes/generar', [App\Http\Controllers\InformeController::class, 'generar'])->name('informes.generar');
+    Route::post('/informes/por-anio', [App\Http\Controllers\InformeController::class, 'generarPorAnio'])->name('informes.generarPorAnio');
+
+    Route::delete('/informes/{id}', [App\Http\Controllers\InformeController::class, 'destroy'])->name('informes.destroy');
+
+});
+
+
+
 
 // ----------------- Notificaciones -----------------
 //Administra Notificaciones (admin, carga)

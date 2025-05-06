@@ -37,7 +37,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Sweetalert2-->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
 
 </head>
@@ -237,18 +237,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </div>
 
 <div class="info d-flex align-items-center">
-    @php
-    $rol = $usuario->getRoleNames()->first() ?? 'sin_rol';
-    $color = match($rol) {
-        'admin' => 'bg-danger',    // rojo
-        'carga' => 'bg-primary',   // azul
-        'consulta' => 'bg-success',// verde
-        default => 'bg-secondary', // gris si no tiene rol
-    };
-@endphp
-
-<span class="badge {{ $color }} rounded-circle" style="width: 10px; height: 10px; display: inline-block;"></span>
-
+   
     <a href="{{ route('usuarios.show', $usuario->id ?? 0) }}" class="text-success me-2">
         {{ $usuario->nombre_apellido ?? 'Invitado' }}
     </a>
@@ -678,17 +667,42 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </li>
                     </li>
                 </ul>
-                <li class="nav-item">
-                    <a href="{{ url('informes') }}" class="nav-link active bg-primary text-white">
-                        <i class="nav-icon fas">
-                            <i class="bi bi-info-square"></i>
-                        </i>
-                        <p>
-                            Informes
-                            <i class="right fas fa-angle-left"></i>
-                            </i>
-                        </p>
-                    </a>
+                @role('admin|carga')
+<li class="nav-item">
+    <a href="#" class="nav-link active bg-primary text-white">
+        <i class="nav-icon fas">
+            <i class="bi bi-info-square"></i>
+        </i>
+        <p>
+            Gestión de Informes
+            <i class="right fas fa-angle-left"></i>
+        </p>
+    </a>
+
+    <ul class="nav nav-treeview">
+        <li class="nav-item">
+            <a href="{{ route('informes.porFecha') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Por Fechas</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('informes.porAnio') }}" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Por Año</p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('informes.historico') }}" class="nav-link">
+                <i class="far fa-clock nav-icon"></i>
+                <p>Historial</p>
+            </a>
+        </li>
+    </ul>
+</li>
+@endrole
+
+
                     @role('admin|carga')
                 <li class="nav-item">
                     <a href="{{ route('notificacion') }}" class="nav-link active bg-primary text-white">

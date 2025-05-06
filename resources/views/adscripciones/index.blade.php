@@ -38,7 +38,7 @@
                                     <th>Tipo</th>
                                     <th>Modalidad</th>
                                     <th>Fecha Adscripción</th>
-                                    <th>Iniciado</th>
+                                    <th>Designado</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -51,7 +51,14 @@
                                         <td>{{ $adscripcion->tipo_adscripcion }}</td>
                                         <td>{{ $adscripcion->modalidad_adscripcion }}</td>
                                         <td>{{ \Carbon\Carbon::parse($adscripcion->fecha_adscripcion)->format('d/m/Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($adscripcion->created_at)->format('d/m/Y H:i') }}</td>
+                                        <td>
+                                            @if($adscripcion->designado)
+                                                {{ $adscripcion->designado->nombre_apellido }}
+                                            @else
+                                                <em>Sin designar</em>
+                                            @endif
+                                        </td>
+                                        
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Acciones">
                                                 <a href="{{ route('adscripciones.show', $adscripcion->id) }}" class="btn btn-info"><i class="bi bi-eye"></i></a>

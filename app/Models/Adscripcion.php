@@ -26,6 +26,8 @@ class Adscripcion extends Model
         'observaciones',
         'estado',
         'comentario', 
+        'designado_id',
+
     ];
 
     // Relación con jerarquía
@@ -123,4 +125,10 @@ class Adscripcion extends Model
             ->wherePivot('tipo', 'suplente')
             ->withTimestamps();
     }
+
+    public function designado()
+{
+    return $this->belongsTo(\App\Models\Adscripto::class, 'designado_id');
+}
+
 }

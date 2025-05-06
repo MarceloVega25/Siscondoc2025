@@ -1,0 +1,17 @@
+/* Estilos generales para Select2 en todo el sistema */
+.select2-container--default .select2-selection--single .select2-selection__rendered,
+.select2-container--default .select2-selection--multiple .select2-selection__rendered,
+.select2-container--default .select2-results__option {
+    color: black; /* Cambiá el color acá si querés */
+}
+
+.select2-container--default .select2-results__option--highlighted {
+    background-color: #007bff;
+    color: white;
+}
+/* Color de texto en los elementos seleccionados (modo múltiple) */
+.select2-selection__choice {
+    color: black !important;  /* Letra negra */
+    background-color: #e9ecef;  /* Fondo opcional */
+    border: 1px solid #ced4da;
+}

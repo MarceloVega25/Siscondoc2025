@@ -4,20 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\{Concurso, Jerarquia, Asignatura, Departamento, 
     Carrera, Inscripto, Docente, Estudiante, Veedor};
-    
+
 use Illuminate\Http\Request;
 
 class ConcursoController extends Controller
 {
     public function index()
-{
-    $concursos = Concurso::with(['jerarquia', 'carreras', 'asignaturas', 'departamentos'])
-                         ->orderBy('id', 'desc')
-                         ->get();
+    {
+        $concursos = Concurso::with([
+            'jerarquia', 'carreras', 'asignaturas', 'departamentos',
+            'designado' // ✅ AGREGADO: para traer también el inscripto designado
+        ])
+        ->orderBy('id', 'desc')
+        ->get();
 
-    return view('concursos.index', ['concursos' => $concursos]);
-}
-
+        return view('concursos.index', ['concursos' => $concursos]);
+    }
 
     public function create()
     {
@@ -40,12 +42,13 @@ class ConcursoController extends Controller
             'anio' => 'required|numeric',
             'jerarquia_id' => 'required|exists:jerarquias,id',
             'tipo_concurso' => 'required',
+            'designado_id' => 'nullable|exists:inscriptos,id', // ✅ AGREGADO: validación del designado
         ]);
 
         $concurso = Concurso::create($request->only([
             'numero', 'anio', 'jerarquia_id', 'tipo_concurso', 'modalidad_concurso',
             'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
-            'fecha_concurso', 'expediente', 'observaciones', 'estado', 'comentario'
+            'fecha_concurso', 'expediente', 'observaciones', 'estado', 'comentario', 'designado_id' // ✅ AGREGADO: guardar designado_id
         ]));
 
         $concurso->registrarEstado('Concurso creado', 'Registro inicial del concurso');
@@ -92,7 +95,7 @@ class ConcursoController extends Controller
             'carreras', 'inscriptos', 'veedores',
             'docentesTitulares', 'docentesSuplentes',
             'estudiantesTitulares', 'estudiantesSuplentes',
-            'estados'
+            'estados', 'designado' // ✅ AGREGADO: también cargar el designado en el show
         ]);
 
         return view('concursos.show', compact('concurso'));
@@ -127,12 +130,13 @@ class ConcursoController extends Controller
             'anio' => 'required|numeric',
             'jerarquia_id' => 'required|exists:jerarquias,id',
             'tipo_concurso' => 'required',
+            'designado_id' => 'nullable|exists:inscriptos,id', // ✅ AGREGADO: validación del designado
         ]);
 
         $concurso->update($request->only([
             'numero', 'anio', 'jerarquia_id', 'tipo_concurso', 'modalidad_concurso',
             'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
-            'fecha_concurso', 'expediente', 'observaciones', 'estado', 'comentario'
+            'fecha_concurso', 'expediente', 'observaciones', 'estado', 'comentario', 'designado_id' // ✅ AGREGADO: actualizar también el designado
         ]));
 
         $concurso->registrarEstado('Datos actualizados', 'Actualización manual del concurso');

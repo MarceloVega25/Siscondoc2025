@@ -138,7 +138,7 @@
                                     <label>Docentes Titulares</label>
                                     <select name="docentes_titulares[]" class="form-control select2" multiple>
                                         @foreach ($docentes as $d)
-                                            <option value="{{ $d->id }}" {{ isSelected($adscripcion->docentesTitulares, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                            <option value="{{ $d->id }}" {{ isSelected($adscripcion->docentesTitulares, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}, Institución: {{ $d->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -146,7 +146,7 @@
                                     <label>Docentes Suplentes</label>
                                     <select name="docentes_suplentes[]" class="form-control select2" multiple>
                                         @foreach ($docentes as $d)
-                                            <option value="{{ $d->id }}" {{ isSelected($adscripcion->docentesSuplentes, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}</option>
+                                            <option value="{{ $d->id }}" {{ isSelected($adscripcion->docentesSuplentes, $d->id) }}>{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}, Institución: {{ $d->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -157,7 +157,7 @@
                                     <label>Estudiantes Titulares</label>
                                     <select name="estudiantes_titulares[]" class="form-control select2" multiple>
                                         @foreach ($estudiantes as $e)
-                                            <option value="{{ $e->id }}" {{ isSelected($adscripcion->estudiantesTitulares, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}</option>
+                                            <option value="{{ $e->id }}" {{ isSelected($adscripcion->estudiantesTitulares, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}, Institución: {{ $e->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -165,7 +165,7 @@
                                     <label>Estudiantes Suplentes</label>
                                     <select name="estudiantes_suplentes[]" class="form-control select2" multiple>
                                         @foreach ($estudiantes as $e)
-                                            <option value="{{ $e->id }}" {{ isSelected($adscripcion->estudiantesSuplentes, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}</option>
+                                            <option value="{{ $e->id }}" {{ isSelected($adscripcion->estudiantesSuplentes, $e->id) }}>{{ $e->nombre_apellido }}, DNI: {{ $e->dni }}, Institución: {{ $e->institucion }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -184,15 +184,29 @@
 
                             <div class="row mt-3">
                                 <div class="col-md-12">
-                                    <label>Inscriptos</label>
-                                    <select name="inscriptos[]" class="form-control select2" multiple>
+                                    <label>Adscriptos</label>
+                                    <select name="adscriptos[]" class="form-control select2" multiple>
                                         @foreach ($adscriptos as $i)
-                                            <option value="{{ $i->id }}" {{ isSelected($adscripcion->inscriptos, $i->id) }}>{{ $i->nombre_apellido }}, DNI: {{ $i->dni }}, Email: {{ $i->email }}</option>
+                                            <option value="{{ $i->id }}" {{ isSelected($adscripcion->adscriptos, $i->id) }}>{{ $i->nombre_apellido }}, DNI: {{ $i->dni }}, Email: {{ $i->email }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
+                                <div class="row mt-3">
+                                    <div class="col-md-12">
+                                        <label>Designado</label>
+                                        <select name="designado_id" class="form-control">
+                                            <option value="">Seleccione un adscripto designado</option>
+                                            @foreach ($adscripcion->adscriptos as $a)
+                                        <option value="{{ $a->id }}" {{ $adscripcion->designado_id == $a->id ? 'selected' : '' }}>
+                                            {{ $a->nombre_apellido }}, DNI: {{ $a->dni }}, Email: {{ $a->email }}
+                                        </option>
+                                    @endforeach
+                                        </select>
+                                    </div>
+                                    
+                                </div>
                             <hr>
 
 

@@ -1,0 +1,159 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\{
+    Inscripto,
+    Concurso,
+    Adscripto,
+    Adscripcion,
+    Docente,
+    Estudiante,
+    Veedor,
+    Jerarquia,
+    Carrera,
+    Departamento,
+    Asignatura,
+    Usuario,
+    Modulo,
+    InformeGenerado
+};
+
+class InformeController extends Controller
+{
+    public function index()
+    {
+        $modulos = Modulo::orderBy('nombre')->get();
+        return view('informes.index', compact('modulos'));
+    }
+
+    public function porFecha()
+    {
+        $modulos = Modulo::orderBy('nombre')->get();
+        return view('informes.por_fecha', compact('modulos'));
+    }
+
+    public function porAnio()
+    {
+        $modulos = Modulo::orderBy('nombre')->get();
+        return view('informes.por_anio', compact('modulos'));
+    }
+
+    public function generar(Request $request)
+    {
+        $modulo = $request->modulo;
+        $desde = $request->fecha_inicio;
+        $hasta = $request->fecha_fin;
+
+        $modelos = [
+            'inscriptos' => Inscripto::class,
+            'concursos' => Concurso::class,
+            'adscriptos' => Adscripto::class,
+            'adscripciones' => Adscripcion::class,
+            'docentes' => Docente::class,
+            'estudiantes' => Estudiante::class,
+            'veedores' => Veedor::class,
+            'jerarquias' => Jerarquia::class,
+            'carreras' => Carrera::class,
+            'departamentos' => Departamento::class,
+            'asignaturas' => Asignatura::class,
+            'usuarios' => Usuario::class,
+        ];
+
+        if (!array_key_exists($modulo, $modelos)) {
+            return back()->with('error', 'Módulo no reconocido.');
+        }
+
+        $modelo = $modelos[$modulo];
+        $datos = $modelo::whereBetween('created_at', [$desde, $hasta])->get();
+
+        if ($datos->isEmpty()) {
+            return back()->with('error', 'No hay datos para ese rango de fechas.');
+        }
+
+        // Guardar en historial
+        InformeGenerado::create([
+            'modulo' => $modulo,
+            'fecha_desde' => $desde,
+            'fecha_hasta' => $hasta,
+            'usuario' => Auth::user()->nombre_apellido,
+        ]);
+
+        $vista = "informes.pdf_" . $modulo;
+
+        if (!view()->exists($vista)) {
+            return back()->with('error', 'La vista PDF para este módulo no existe: ' . $vista);
+        }
+
+        $pdf = Pdf::loadView($vista, compact('datos', 'desde', 'hasta'));
+
+        return $pdf->stream("informe_{$modulo}_{$desde}_{$hasta}.pdf");
+    }
+
+    public function generarPorAnio(Request $request)
+    {
+        $anio = $request->anio;
+        $modulo = $request->modulo;
+
+        $modelos = [
+            'inscriptos' => Inscripto::class,
+            'concursos' => Concurso::class,
+            'adscriptos' => Adscripto::class,
+            'adscripciones' => Adscripcion::class,
+            'docentes' => Docente::class,
+            'estudiantes' => Estudiante::class,
+            'veedores' => Veedor::class,
+            'jerarquias' => Jerarquia::class,
+            'carreras' => Carrera::class,
+            'departamentos' => Departamento::class,
+            'asignaturas' => Asignatura::class,
+            'usuarios' => Usuario::class,
+        ];
+
+        if (!array_key_exists($modulo, $modelos)) {
+            return back()->with('error', 'Módulo no reconocido.');
+        }
+
+        $modelo = $modelos[$modulo];
+        $datos = $modelo::whereYear('created_at', $anio)->get();
+
+        if ($datos->isEmpty()) {
+            return back()->with('error', 'No hay datos para el año seleccionado.');
+        }
+
+        // Guardar en historial
+        InformeGenerado::create([
+            'modulo' => $modulo,
+            'anio' => $anio,
+            'usuario' => Auth::user()->nombre_apellido,
+        ]);
+
+        $vista = "informes.pdf_" . $modulo;
+
+        if (!view()->exists($vista)) {
+            return back()->with('error', 'La vista PDF para este módulo no existe: ' . $vista);
+        }
+
+        $pdf = Pdf::loadView($vista, compact('datos', 'anio'));
+
+        return $pdf->stream("informe_{$modulo}_{$anio}.pdf");
+    }
+
+    public function historico()
+{
+    $historial = InformeGenerado::orderBy('created_at', 'desc')->paginate(20);
+    return view('informes.historico', compact('historial'));
+}
+
+public function destroy($id)
+{
+    $registro = \App\Models\InformeGenerado::findOrFail($id);
+    $registro->delete();
+
+    return redirect()->route('informes.historico')->with('success', 'Se eliminó el Informe del historial.');
+}
+
+}

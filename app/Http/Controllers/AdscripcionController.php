@@ -44,12 +44,13 @@ class AdscripcionController extends Controller
             'anio' => 'required|numeric',
             'jerarquia_id' => 'required|exists:jerarquias,id',
             'tipo_adscripcion' => 'required',
+            'designado_id' => 'nullable|exists:adscriptos,id',
         ]);
 
         $adscripcion = Adscripcion::create($request->only([
             'numero', 'anio', 'jerarquia_id', 'tipo_adscripcion', 'modalidad_adscripcion',
             'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
-            'fecha_adscripcion', 'expediente', 'observaciones', 'estado', 'comentario'
+            'fecha_adscripcion', 'expediente', 'observaciones', 'estado', 'comentario','designado_id',
         ]));
 
         $adscripcion->registrarEstado('Adscripcion creada', 'Registro inicial del adscripcion');
@@ -132,12 +133,13 @@ class AdscripcionController extends Controller
             'anio' => 'required|numeric',
             'jerarquia_id' => 'required|exists:jerarquias,id',
             'tipo_adscripcion' => 'required',
+            'designado_id' => 'nullable|exists:adscriptos,id',
         ]);
 
         $adscripcion->update($request->only([
             'numero', 'anio', 'jerarquia_id', 'tipo_adscripcion', 'modalidad_adscripcion',
             'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
-            'fecha_adscripcion', 'expediente', 'observaciones', 'estado', 'comentario'
+            'fecha_adscripcion', 'expediente', 'observaciones', 'estado', 'comentario','designado_id',
         ]));
 
         $adscripcion->registrarEstado('Datos actualizados', 'Actualización manual del adscripción');

@@ -38,7 +38,7 @@
                                     <th>Tipo</th>
                                     <th>Modalidad</th>
                                     <th>Fecha Concurso</th>
-                                    <th>Iniciado</th>
+                                    <th>Designado</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -51,7 +51,14 @@
                                         <td>{{ $concurso->tipo_concurso }}</td>
                                         <td>{{ $concurso->modalidad_concurso }}</td>
                                         <td>{{ \Carbon\Carbon::parse($concurso->fecha_concurso)->format('d/m/Y') }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($concurso->created_at)->format('d/m/Y H:i') }}</td>
+                                        <td>
+                                            @if($concurso->designado)
+                                                {{ $concurso->designado->nombre_apellido }}
+                                            @else
+                                                <em>Sin designar</em>
+                                            @endif
+                                        </td>
+                                        
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Acciones">
                                                 <a href="{{ route('concursos.show', $concurso->id) }}" class="btn btn-info"><i class="bi bi-eye"></i></a>

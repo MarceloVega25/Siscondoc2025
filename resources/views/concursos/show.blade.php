@@ -23,7 +23,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label>Fecha Concurso</label>
-                                <input type="text" class="form-control" value="{{ $concurso->fecha_concurso }}" disabled>
+                                <input type="text" class="form-control" value="{{ $concurso->fecha_concurso ? \Carbon\Carbon::parse($concurso->fecha_concurso)->format('d/m/Y') : '' }}" disabled>
                             </div>
                             <div class="col-md-3">
                                 <label>Expediente</label>
@@ -49,19 +49,19 @@
                         <div class="row mt-3">
                             <div class="col-md-3">
                                 <label>Inicio Publicidad</label>
-                                <input type="text" class="form-control" value="{{ $concurso->inicio_publicidad }}" disabled>
+                                <input type="text" class="form-control" value="{{ $concurso->inicio_publicidad ? \Carbon\Carbon::parse($concurso->inicio_publicidad)->format('d/m/Y') : '' }}" disabled>
                             </div>
                             <div class="col-md-3">
                                 <label>Cierre Publicidad</label>
-                                <input type="text" class="form-control" value="{{ $concurso->cierre_publicidad }}" disabled>
+                                <input type="text" class="form-control" value="{{ $concurso->cierre_publicidad ? \Carbon\Carbon::parse($concurso->cierre_publicidad)->format('d/m/Y') : '' }}" disabled>
                             </div>
                             <div class="col-md-3">
                                 <label>Inicio Inscripción</label>
-                                <input type="text" class="form-control" value="{{ $concurso->inicio_inscripcion }}" disabled>
+                                <input type="text" class="form-control" value="{{ $concurso->inicio_inscripcion ? \Carbon\Carbon::parse($concurso->inicio_inscripcion)->format('d/m/Y') : '' }}" disabled>
                             </div>
                             <div class="col-md-3">
                                 <label>Cierre Inscripción</label>
-                                <input type="text" class="form-control" value="{{ $concurso->cierre_inscripcion }}" disabled>
+                                <input type="text" class="form-control" value="{{ $concurso->cierre_inscripcion ? \Carbon\Carbon::parse($concurso->cierre_inscripcion)->format('d/m/Y') : '' }}" disabled>
                             </div>
                         </div>
 
@@ -98,39 +98,63 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label>Docentes Titulares</label>
-                                <textarea class="form-control" disabled>{{ lista($concurso->docentesTitulares) }}</textarea>
+                                @foreach ($concurso->docentesTitulares as $docente)
+                                    <input type="text" class="form-control mb-2" value="{{ $docente->nombre_apellido }}, DNI: {{ $docente->dni }}, Institución: {{ $docente->institucion }}" disabled>
+                                @endforeach
                             </div>
+                            
                             <div class="col-md-6">
                                 <label>Docentes Suplentes</label>
-                                <textarea class="form-control" disabled>{{ lista($concurso->docentesSuplentes) }}</textarea>
+                                @foreach ($concurso->docentesSuplentes as $docente)
+                                    <input type="text" class="form-control mb-2" value="{{ $docente->nombre_apellido }}, DNI: {{ $docente->dni }}, Institución: {{ $docente->institucion }}" disabled>
+                                @endforeach
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label>Estudiantes Titulares</label>
-                                <textarea class="form-control" disabled>{{ lista($concurso->estudiantesTitulares) }}</textarea>
+                                @foreach ($concurso->estudiantesTitulares as $estudiante)
+                                    <input type="text" class="form-control mb-2" value="{{ $estudiante->nombre_apellido }}, DNI: {{ $estudiante->dni }}, Institución: {{ $estudiante->institucion }}" disabled>
+                                @endforeach
                             </div>
+
                             <div class="col-md-6">
                                 <label>Estudiantes Suplentes</label>
-                                <textarea class="form-control" disabled>{{ lista($concurso->estudiantesSuplentes) }}</textarea>
+                                @foreach ($concurso->estudiantesSuplentes as $estudiante)
+                                    <input type="text" class="form-control mb-2" value="{{ $estudiante->nombre_apellido }}, DNI: {{ $estudiante->dni }}, Institución: {{ $estudiante->institucion }}" disabled>
+                                @endforeach
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label>Veedores</label>
-                                <textarea class="form-control" disabled>{{ lista($concurso->veedores) }}</textarea>
-                            </div>
+                                @foreach ($concurso->veedores as $veedor)
+                                <input type="text" class="form-control mb-2" value="{{ $veedor->nombre_apellido }}, DNI: {{ $veedor->dni }}, Cargo: {{ $veedor->cargo }}" disabled>
+                            @endforeach
+                        </div>
                             
                         </div>
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <label>Inscriptos</label>
-                                <textarea class="form-control" disabled>{{ lista($concurso->inscriptos) }}</textarea>
+                                @foreach ($concurso->inscriptos as $inscripto)
+            <input type="text" class="form-control mb-2" value="{{ $inscripto->nombre_apellido }}, DNI: {{ $inscripto->dni }}, Email: {{ $inscripto->email }}" disabled>
+        @endforeach
+    </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <label>Designado</label>
+                                <input type="text" class="form-control"
+                                       value="{{ $concurso->designado ? $concurso->designado->nombre_apellido . ', DNI: ' . $concurso->designado->dni . ', Email: ' . $concurso->designado->email : 'Sin designar' }}" disabled>
                             </div>
                         </div>
-
+                        
+                        
+                    </div>
+                    
 
                         <div class="row mt-4">
                             <div class="col-md-12">
