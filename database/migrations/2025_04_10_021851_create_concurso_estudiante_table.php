@@ -17,6 +17,9 @@ return new class extends Migration
             $table->foreignId('estudiante_id')->constrained()->onDelete('cascade');
             $table->enum('tipo', ['titular', 'suplente']);
             $table->timestamps();
+
+            $table->unique(['concurso_id', 'estudiante_id', 'tipo']);
+
         });
         
     }

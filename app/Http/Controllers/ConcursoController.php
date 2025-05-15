@@ -60,12 +60,12 @@ class ConcursoController extends Controller
             'inicio_publicidad', 'cierre_publicidad', 'inicio_inscripcion', 'cierre_inscripcion',
             'fecha_concurso', 'expediente', 'observaciones', 'estado', 'comentario', 'designado_id'
         ]));
-
-        $concurso->carreras()->sync($request->input('carreras', []));
         $concurso->asignaturas()->sync($request->input('asignaturas', []));
         $concurso->departamentos()->sync($request->input('departamentos', []));
-        $concurso->inscriptos()->sync($request->input('inscriptos', []));
+        $concurso->carreras()->sync($request->input('carreras', []));
         $concurso->veedores()->sync($request->input('veedores', []));
+        $concurso->inscriptos()->sync($request->input('inscriptos', []));
+        
 
         if ($request->has('docentes_titulares')) {
             foreach ($request->docentes_titulares as $id) {
@@ -368,7 +368,7 @@ class ConcursoController extends Controller
         $accion = 'Se modifica año del concurso';
     }
     elseif (in_array('fecha_concurso', $tiposDeCambio) && count($tiposDeCambio) === 1) {
-        $accion = 'Se asigna fecha de concurso';
+        $accion = 'Se modifica fecha de concurso';
     }
     elseif (in_array('expediente', $tiposDeCambio) && count($tiposDeCambio) === 1) {
         $accion = 'Se modifica expediente';
