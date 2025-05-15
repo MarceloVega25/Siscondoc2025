@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form action="{{ route('informes.generar') }}" method="POST" target="_blank">
+                    <form action="{{ route('informes.generar') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md-4">

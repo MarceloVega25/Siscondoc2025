@@ -5,7 +5,7 @@
         <h1>Datos del Concurso</h1>
 
         <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-12"> {{-- Cambiado de col-md-11 a col-md-12 --}}
                 <div class="card card-outline card-info">
                     <div class="card-header">
                         <h3 class="card-title"><b>Información del Concurso</b></h3>
@@ -45,7 +45,7 @@
                                 <input type="text" class="form-control" value="{{ $concurso->modalidad_concurso }}" disabled>
                             </div>
                         </div>
-                        
+
                         <div class="row mt-3">
                             <div class="col-md-3">
                                 <label>Inicio Publicidad</label>
@@ -65,8 +65,6 @@
                             </div>
                         </div>
 
-                        
-
                         <div class="form-group mt-3">
                             <label>Observaciones</label>
                             <textarea class="form-control" disabled>{{ $concurso->observaciones }}</textarea>
@@ -74,13 +72,7 @@
 
                         <hr>
 
-                        @php
-                            function lista($items) {
-                                return $items->pluck('nombre_apellido')->implode(', ');
-                            }
-                        @endphp
-
-                        <div class="row">
+                        <div class="row mt-3">
                             <div class="col-md-4">
                                 <label>Asignaturas</label>
                                 <textarea class="form-control" disabled>{{ $concurso->asignaturas->pluck('nombre')->implode(', ') }}</textarea>
@@ -98,77 +90,85 @@
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label>Docentes Titulares</label>
-                                @foreach ($concurso->docentesTitulares as $docente)
+                                @forelse ($concurso->docentesTitulares as $docente)
                                     <input type="text" class="form-control mb-2" value="{{ $docente->nombre_apellido }}, DNI: {{ $docente->dni }}, Institución: {{ $docente->institucion }}" disabled>
-                                @endforeach
+                                @empty
+                                    <input type="text" class="form-control" value="No hay docentes titulares registrados" disabled>
+                                @endforelse
                             </div>
-                            
+
                             <div class="col-md-6">
                                 <label>Docentes Suplentes</label>
-                                @foreach ($concurso->docentesSuplentes as $docente)
+                                @forelse ($concurso->docentesSuplentes as $docente)
                                     <input type="text" class="form-control mb-2" value="{{ $docente->nombre_apellido }}, DNI: {{ $docente->dni }}, Institución: {{ $docente->institucion }}" disabled>
-                                @endforeach
+                                @empty
+                                    <input type="text" class="form-control" value="No hay docentes suplentes registrados" disabled>
+                                @endforelse
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label>Estudiantes Titulares</label>
-                                @foreach ($concurso->estudiantesTitulares as $estudiante)
+                                @forelse ($concurso->estudiantesTitulares as $estudiante)
                                     <input type="text" class="form-control mb-2" value="{{ $estudiante->nombre_apellido }}, DNI: {{ $estudiante->dni }}, Institución: {{ $estudiante->institucion }}" disabled>
-                                @endforeach
+                                @empty
+                                    <input type="text" class="form-control" value="No hay estudiantes titulares registrados" disabled>
+                                @endforelse
                             </div>
 
                             <div class="col-md-6">
                                 <label>Estudiantes Suplentes</label>
-                                @foreach ($concurso->estudiantesSuplentes as $estudiante)
+                                @forelse ($concurso->estudiantesSuplentes as $estudiante)
                                     <input type="text" class="form-control mb-2" value="{{ $estudiante->nombre_apellido }}, DNI: {{ $estudiante->dni }}, Institución: {{ $estudiante->institucion }}" disabled>
-                                @endforeach
+                                @empty
+                                    <input type="text" class="form-control" value="No hay estudiantes suplentes registrados" disabled>
+                                @endforelse
                             </div>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <label>Veedores</label>
-                                @foreach ($concurso->veedores as $veedor)
-                                <input type="text" class="form-control mb-2" value="{{ $veedor->nombre_apellido }}, DNI: {{ $veedor->dni }}, Cargo: {{ $veedor->cargo }}" disabled>
-                            @endforeach
+                                @forelse ($concurso->veedores as $veedor)
+                                    <input type="text" class="form-control mb-2" value="{{ $veedor->nombre_apellido }}, DNI: {{ $veedor->dni }}, Cargo: {{ $veedor->cargo }}" disabled>
+                                @empty
+                                    <input type="text" class="form-control" value="No hay veedores registrados" disabled>
+                                @endforelse
+                            </div>
                         </div>
-                            
-                        </div>
+
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <label>Inscriptos</label>
-                                @foreach ($concurso->inscriptos as $inscripto)
-            <input type="text" class="form-control mb-2" value="{{ $inscripto->nombre_apellido }}, DNI: {{ $inscripto->dni }}, Email: {{ $inscripto->email }}" disabled>
-        @endforeach
-    </div>
+                                @forelse ($concurso->inscriptos as $inscripto)
+                                    <input type="text" class="form-control mb-2" value="{{ $inscripto->nombre_apellido }}, DNI: {{ $inscripto->dni }}, Email: {{ $inscripto->email }}" disabled>
+                                @empty
+                                    <input type="text" class="form-control" value="No hay inscriptos registrados" disabled>
+                                @endforelse
+                            </div>
                         </div>
+
                         <div class="row mt-3">
                             <div class="col-md-12">
                                 <label>Designado</label>
                                 <input type="text" class="form-control"
-                                       value="{{ $concurso->designado ? $concurso->designado->nombre_apellido . ', DNI: ' . $concurso->designado->dni . ', Email: ' . $concurso->designado->email : 'Sin designar' }}" disabled>
+                                    value="{{ $concurso->designado ? $concurso->designado->nombre_apellido . ', DNI: ' . $concurso->designado->dni . ', Email: ' . $concurso->designado->email : 'Sin designar' }}" disabled>
                             </div>
                         </div>
-                        
-                        
-                    </div>
-                    
 
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <hr>
                                 <a href="{{ route('concursos.index') }}" class="btn btn-danger">Volver al listado</a>
                                 @role('admin|carga')
-                                <a href="{{ route('concursos.edit', $concurso->id) }}" class="btn btn-warning">Editar Concurso</a>
-                            @endrole
+                                    <a href="{{ route('concursos.edit', $concurso->id) }}" class="btn btn-warning">Editar Concurso</a>
+                                @endrole
                             </div>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    </div> {{-- card-body --}}
+                </div> {{-- card --}}
+            </div> {{-- col --}}
+        </div> {{-- row --}}
+    </div> {{-- content --}}
 @endsection

@@ -39,7 +39,8 @@
                                     <th>Modalidad</th>
                                     <th>Fecha Concurso</th>
                                     <th>Designado</th>
-                                    <th>Acción</th>
+
+                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -47,10 +48,17 @@
                                     <tr>
                                         <td>{{ $concurso->id }}</td>
                                         <td>{{ $concurso->numero }}/{{ $concurso->anio }}</td>
-                                        <td>{{ $concurso->jerarquia->siglas ?? '-' }}</td>
+                                        <td>{{ $concurso->jerarquia->nombre ?? '-' }}</td>
                                         <td>{{ $concurso->tipo_concurso }}</td>
                                         <td>{{ $concurso->modalidad_concurso }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($concurso->fecha_concurso)->format('d/m/Y') }}</td>
+                                        <td>
+                                            @if ($concurso->fecha_concurso)
+                                                {{ \Carbon\Carbon::parse($concurso->fecha_concurso)->format('d/m/Y') }}
+                                            @else
+                                                <em>Sin definir</em>
+                                            @endif
+                                        </td>
+                                        
                                         <td>
                                             @if($concurso->designado)
                                                 {{ $concurso->designado->nombre_apellido }}
@@ -59,16 +67,24 @@
                                             @endif
                                         </td>
                                         
+                                        <!--<td class="text-center">
+                                            
+                                        </td>-->
+                                        
                                         <td style="text-align: center">
                                             <div class="btn-group" role="group" aria-label="Acciones">
-                                                <a href="{{ route('concursos.show', $concurso->id) }}" class="btn btn-info"><i class="bi bi-eye"></i></a>
+                                                <a href="{{ route('concursos.seguimientos', $concurso->id) }}" class="btn btn-warning btn-sm" title="Seguir">
+                                                <i class="bi bi-clock-history"></i> Seguimiento
+                                            </a>
+                                                <a href="{{ route('concursos.show', $concurso->id) }}" class="btn btn-info" title="Ver">
+                                                    <i class="bi bi-eye"></i></a>
                                                 
                                                 @role('admin|carga')
-                                                <a href="{{ route('concursos.edit', $concurso->id) }}" class="btn btn-success"><i class="bi bi-pencil"></i></a>
+                                                <a href="{{ route('concursos.edit', $concurso->id) }}" class="btn btn-success" title="Editar"><i class="bi bi-pencil"></i></a>
                                                 <form id="delete-form-{{ $concurso->id }}" action="{{ route('concursos.destroy', $concurso->id) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger" onclick="confirmarEliminacion({{ $concurso->id }})">
+                                                    <button type="button" class="btn btn-danger" title="Eliminar" onclick="confirmarEliminacion({{ $concurso->id }})">
                                                         <i class="bi bi-trash3"></i>
                                                     </button>
                                                 </form>

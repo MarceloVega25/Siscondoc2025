@@ -129,4 +129,10 @@ public function designado()
     return $this->belongsTo(\App\Models\Inscripto::class, 'designado_id');
 }
 
+public function seguimientos()
+{
+    return $this->hasMany(SeguimientoConcurso::class)->orderBy('fecha', 'desc');
+}
+
+
 }

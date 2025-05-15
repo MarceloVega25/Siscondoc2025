@@ -11,12 +11,12 @@ class InformeGenerado extends Model
     
     protected $table = 'informes_generados';
 
-
     protected $fillable = [
         'modulo',
         'fecha_desde',
         'fecha_hasta',
         'anio',
         'usuario',
+        'archivo_pdf', // ← AGREGALO ACÁ
     ];
 }

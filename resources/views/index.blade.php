@@ -151,18 +151,18 @@
       <!-- small box -->
       <div class="small-box bg-dark" style="height: 160px">
         <div class="inner">
-          <?php $contador_de_usuario = 0; ?>
-          @foreach ($usuarios as $usuario)
-          <?php $contador_de_usuario = $contador_de_usuario + 1;?>            
+          <?php $contador_de_informe = 0; ?>
+          @foreach ($informes as $informe)
+          <?php $contador_de_informe = $contador_de_informe + 1;?>            
           @endforeach
-          <h3><?=$contador_de_usuario;?></h3>
+          <h3><?=$contador_de_informe;?></h3>
 
           <p>Informes</p>
         </div>
         <div class="icon">
           <i class="bi bi-person-workspace"></i>
         </div>
-        <a href="{{ url('usuarios') }}" class="small-box-footer" style="margin-top: 20px">Más información <i class="fas fa-arrow-circle-right"></i></a>
+        <a href="{{ route('informes.historico') }}" class="small-box-footer" style="margin-top: 20px">Más información <i class="fas fa-arrow-circle-right"></i></a>
       </div>
     </div>
 @endrole

@@ -23,13 +23,14 @@
                     <table class="table table-bordered table-hover">
                         <thead class="thead-light">
                             <tr>
-                                <th>#</th>
+                                <!--<th>#</th>-->
                                 <th>Módulo</th>
                                 <th>Desde</th>
                                 <th>Hasta</th>
                                 <th>Año</th>
                                 <th>Generado por</th>
                                 <th>Fecha de generación</th>
+                                <th>PDF Generado</th>
                                 @role('admin')
                                     <th>Acciones</th>
                                 @endrole
@@ -38,25 +39,37 @@
                         <tbody>
                             @foreach ($historial as $item)
                                 <tr>
-                                    <td>{{ $item->id }}</td>
+                                    <!--<td>{{ $item->id }}</td>-->
                                     <td>{{ ucfirst($item->modulo) }}</td>
-                                    <td>{{ $item->fecha_desde ?? '-' }}</td>
-                                    <td>{{ $item->fecha_hasta ?? '-' }}</td>
+                                    <td>{{ $item->fecha_desde ? \Carbon\Carbon::parse($item->fecha_desde)->format('d/m/Y') : '-' }}</td>
+                                    <td>{{ $item->fecha_hasta ? \Carbon\Carbon::parse($item->fecha_hasta)->format('d/m/Y') : '-' }}</td>                                    
                                     <td>{{ $item->anio ?? '-' }}</td>
                                     <td>{{ $item->usuario }}</td>
                                     <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
-                                    @role('admin')
-<td>
-    <form id="delete-form-{{ $item->id }}" action="{{ route('informes.destroy', $item->id) }}" method="POST" style="display: none;">
-        @csrf
-        @method('DELETE')
-    </form>
 
-    <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminacion({{ $item->id }})">
-        <i class="fas fa-trash-alt"></i> Eliminar
-    </button>
-</td>
-@endrole
+                                    <td>
+                                        @if ($item->archivo_pdf)
+                                            <a href="{{ asset('storage/informes/' . $item->archivo_pdf) }}" class="btn btn-sm btn-success" target="_blank">
+                                                <i class="fas fa-file-pdf"></i> Ver PDF
+                                            </a>
+                                        @else
+                                            <span class="text-muted">No disponible</span>
+                                        @endif
+                                    </td>
+                                    
+                                    @role('admin')
+                                    <td>
+                                        <form id="delete-form-{{ $item->id }}" action="{{ route('informes.destroy', $item->id) }}" method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmarEliminacion({{ $item->id }})">
+                                            <i class="fas fa-trash-alt"></i> Eliminar
+                                        </button>
+                                    </td>
+                                    @endrole
+                                    
 
                                 </tr>
                             @endforeach

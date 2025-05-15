@@ -10,6 +10,7 @@ use App\Models\Veedor;
 use App\Models\Usuario;
 use App\Models\Concurso;
 use App\Models\Adscripcion;
+use App\Models\InformeGenerado;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ public function index(){
     $usuarios = Usuario::all();
     $concursos = Concurso::all();
     $adscripciones = Adscripcion::all();
+    $informes = InformeGenerado::all();
+
     return view('index',['inscriptos' => $inscriptos,
     'adscriptos' => $adscriptos, 
     'docentes' => $docentes, 
@@ -32,6 +35,7 @@ public function index(){
     'veedores'=>$veedores,
 'usuarios'=>$usuarios,
 'concursos'=>$concursos,
-'adscripciones'=>$adscripciones]);
+'adscripciones'=>$adscripciones,
+'informes'=>$informes]);
 }
 }

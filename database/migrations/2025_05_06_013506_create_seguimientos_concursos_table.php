@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('seguimientos_concursos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('concurso_id')->constrained()->onDelete('cascade');
+            $table->string('accion'); // Ej: "Se agregó docente titular"
+            $table->text('detalle')->nullable(); // Info extra
+            $table->string('usuario')->nullable(); // Quién hizo la acción
+            $table->timestamp('fecha')->useCurrent(); // Cuándo se hizo
             $table->timestamps();
         });
     }

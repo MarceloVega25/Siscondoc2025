@@ -84,6 +84,12 @@ Route::middleware(['auth', 'role:admin|carga|consulta'])->group(function () {
         ->only(['show', 'index']);
 });
 
+// Ruta para ver el seguimiento de un concurso
+Route::middleware(['auth', 'role:admin|carga|consulta'])->group(function () {
+    Route::get('concursos/{concurso}/seguimientos', [\App\Http\Controllers\ConcursoController::class, 'seguimientos'])
+        ->name('concursos.seguimientos');
+});
+
 // ----------------- Adscriptos -----------------
 //Administra Adscriptos (admin, carga)
 Route::middleware(['auth', 'role:admin|carga'])->group(function () { //protege el grupo de la ruta

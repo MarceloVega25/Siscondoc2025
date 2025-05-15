@@ -143,7 +143,7 @@
                                 <label>Docentes Suplentes</label>
                                 <select name="docentes_suplentes[]" class="form-control select2" multiple>
                                     @foreach ($docentes as $d)
-                                        <option value="{{ $d->id }}">{{ $d->nombre_apellido, }}, DNI: {{ $d->dni }}, Institución: {{ $d->institucion }}</option>
+                                        <option value="{{ $d->id }}">{{ $d->nombre_apellido }}, DNI: {{ $d->dni }}, Institución: {{ $d->institucion }}</option>
                                        
                                     @endforeach
                                 </select>
